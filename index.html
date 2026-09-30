@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اكتشف شخصيتك | Skills Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#080828;--ice:#EBF4FF;--gold:#FFBC3A;--blue:#4D88E8;--red:#F26444;--cyan:#40BDA9;--muted:#5A5A72}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:'Cairo',sans-serif;background:var(--ice);color:var(--navy);overflow-x:hidden;transition:background .6s}
+body.kids,body.tweens{font-family:'Baloo Bhaijaan 2','Cairo',sans-serif}
+body.setup{background:linear-gradient(180deg,#EBF4FF,#fff)}
+body.kids{background:linear-gradient(180deg,#9fd4ff 0%,#EBF4FF 55%,#fff4d6 100%)}
+body.tweens{background:linear-gradient(160deg,#EBF4FF,#d9f3ee 60%,#fff1d0)}
+body.teens{background:radial-gradient(ellipse at top,#1a1a4a,#080828 70%);color:#fff}
+body.youth{background:linear-gradient(160deg,#1c2a6b,#080828 60%)}
+body.young{background:#f6f9ff}
+
+/* decor + fx */
+#decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#decor span{position:absolute;font-size:34px;opacity:.35;animation:float 9s ease-in-out infinite}
+body.teens #decor span{color:var(--gold);font-size:18px;opacity:.6;animation:twinkle 3s infinite}
+body.youth #decor span{color:#fff;opacity:.07;font-size:120px}
+@keyframes float{50%{transform:translate(8px,-18px)}}
+@keyframes twinkle{50%{opacity:.15}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60}
+#printzone{display:none}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;max-width:760px;margin:0 auto;position:relative;z-index:2}
+.logo{color:var(--navy)}
+.logo svg{height:34px;display:block}
+.logo img{height:42px;display:block}
+body.teens .logo,body.youth .logo{color:#fff}
+.tools{display:flex;gap:8px}
+.lang{font:inherit;font-weight:800;font-size:15px;color:var(--navy)}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.85);font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(8,8,40,.12)}
+#app{max-width:760px;margin:0 auto;padding:8px 16px 30px;position:relative;z-index:2}
+.foot{text-align:center;font-size:13px;color:var(--muted);padding:6px 16px 24px;position:relative;z-index:2}
+body.teens .foot,body.youth .foot{color:#9da0c8}
+
+/* cards */
+.card{background:#fff;border-radius:24px;padding:28px 22px;box-shadow:0 18px 40px -18px rgba(8,8,40,.35);position:relative}
+body.kids .card{border-radius:32px;border:4px solid #fff;box-shadow:0 10px 0 #cfe3ff,0 24px 40px -18px rgba(8,8,40,.35)}
+body.tweens .card{border-radius:28px;box-shadow:0 8px 0 #bfe9e0,0 24px 40px -20px rgba(8,8,40,.3)}
+body.teens .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,188,58,.35);box-shadow:0 0 40px -10px rgba(255,188,58,.25);backdrop-filter:blur(6px)}
+body.young .card{border-radius:16px;box-shadow:0 1px 0 #e3e9f5,0 12px 30px -18px rgba(8,8,40,.25)}
+.screen.enter{animation:enter .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.stack>*+*{margin-top:14px}
+
+/* type */
+.h1{font-size:30px;font-weight:800;line-height:1.4;margin:6px 0 8px}
+.h2{font-size:24px;font-weight:800;margin:6px 0 14px;line-height:1.5}
+.lead{font-size:17px;line-height:1.9;color:var(--muted)}
+.muted{color:var(--muted);font-weight:700}
+body.teens .lead,body.teens .muted,body.teens .qnum{color:#c9cbe8}
+.center{text-align:center}
+.hero-emoji{font-size:64px;text-align:center}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+
+/* forms & buttons */
+.lbl{display:block;font-weight:700;margin:18px 0 8px}
+.inp{width:100%;font:inherit;font-size:20px;padding:14px 16px;border-radius:14px;border:2px solid #d6e4fb;background:#f7fbff;outline:none;color:var(--navy)}
+.inp:focus{border-color:var(--blue)}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn{font:inherit;font-weight:800;font-size:17px;border:none;border-radius:14px;padding:13px 22px;cursor:pointer;transition:transform .15s,box-shadow .15s,opacity .2s}
+.btn:active{transform:translateY(2px)}
+.btn.primary{background:var(--gold);color:var(--navy);box-shadow:0 5px 0 #d99a1c}
+.btn.ghost{background:transparent;color:inherit;border:2px solid currentColor;opacity:.75}
+.btn.navy{background:var(--navy);color:#fff}
+.btn.wa{background:#25D366;color:#fff}
+.btn.big{width:100%;font-size:20px;padding:16px}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+body.teens .btn.navy{background:var(--gold);color:var(--navy)}
+.row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.row .btn.primary{flex:1}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.dots i{width:28px;height:6px;border-radius:6px;background:#d6e4fb}
+.dots i.on{background:var(--gold)}
+.parent-hint{font-size:14px;color:var(--muted);background:var(--ice);border-radius:12px;padding:10px 12px;margin-top:18px;line-height:1.8}
+
+/* age */
+.stepper{display:flex;align-items:center;justify-content:center;gap:22px;margin:10px 0}
+.round{width:56px;height:56px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:28px;cursor:pointer}
+body.teens .round{background:var(--gold);color:var(--navy)}
+.agev{font-size:64px;font-weight:800;min-width:110px;text-align:center;color:var(--navy)}
+body.teens .agev{color:var(--gold)}
+.range{width:100%;accent-color:var(--gold)}
+.stage-chip{margin-top:14px;text-align:center;background:var(--ice);border-radius:14px;padding:12px;font-weight:700;line-height:1.7}
+body.teens .stage-chip{background:rgba(255,255,255,.08)}
+
+/* choices */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+.choice{font:inherit;border:3px solid #e3ecfa;background:#fff;border-radius:20px;padding:20px 10px;cursor:pointer;font-size:20px;font-weight:800;color:var(--navy);transition:.2s}
+.choice span{display:block;font-size:56px;margin-bottom:6px}
+.choice:hover{transform:translateY(-3px);border-color:var(--gold)}
+.choice.sel{border-color:var(--gold);background:#fff8e8;box-shadow:0 0 0 4px rgba(255,188,58,.25)}
+.avatars{grid-template-columns:repeat(3,1fr)}
+.avatars .choice{padding:14px 6px}
+.avatars .choice span{font-size:44px;margin:0}
+body.teens .choice{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#fff}
+body.teens .choice.sel{background:rgba(255,188,58,.15);border-color:var(--gold)}
+
+/* intro */
+.intro{text-align:center}
+.guide-big{font-size:84px}
+.tag{display:inline-block;background:var(--ice);color:var(--navy);font-weight:700;font-size:14px;padding:5px 12px;border-radius:30px}
+body.teens .tag{background:rgba(255,188,58,.15);color:var(--gold)}
+.rules{list-style:none;text-align:start;margin:18px auto;max-width:440px;display:grid;gap:8px}
+.rules li{background:var(--ice);border-radius:12px;padding:10px 14px;font-weight:600}
+body.teens .rules li{background:rgba(255,255,255,.06)}
+.note{background:#fff4dc;color:var(--navy);border-radius:12px;padding:10px;margin-bottom:14px;font-size:14px;line-height:1.8}
+
+/* progress */
+.stars{display:flex;justify-content:center;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.stars span{font-size:26px;opacity:.4;transition:.3s}
+.stars span.on{opacity:1;animation:pop .4s}
+.stars span.cur{opacity:1;transform:scale(1.25)}
+.lvl{text-align:center;font-weight:800;color:var(--navy);margin-bottom:4px}
+.map{position:relative;display:flex;justify-content:space-between;align-items:center;margin:4px 6px 18px;height:48px}
+.map::before{content:"";position:absolute;left:8px;right:8px;top:50%;border-top:4px dashed #9fcfc5;transform:translateY(-2px)}
+.node{position:relative;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #9fcfc5;z-index:1;display:grid;place-items:center;font-size:0}
+.node.flag{border-color:var(--gold)}
+.node.done{background:var(--cyan);border-color:var(--cyan)}
+.node.cur{width:44px;height:44px;font-size:24px;border-color:var(--gold);box-shadow:0 0 0 5px rgba(255,188,58,.3)}
+.xp{margin-bottom:16px}
+.xp-top{display:flex;justify-content:space-between;font-size:14px;color:var(--gold);font-weight:700;margin-bottom:6px}
+.xp-bar{height:10px;border-radius:10px;background:rgba(255,255,255,.1);overflow:hidden}
+.xp-bar i{display:block;height:100%;background:linear-gradient(270deg,var(--gold),var(--red));transition:width .5s}
+.pbar{margin-bottom:14px}
+.pbar-top{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:6px;color:#fff}
+body.young .pbar-top{color:var(--navy)}
+.pbar-track{height:8px;border-radius:8px;background:rgba(255,255,255,.2);overflow:hidden}
+body.young .pbar-track{background:#e3e9f5}
+.pbar-track i{display:block;height:100%;border-radius:8px;background:var(--cyan);transition:width .5s}
+
+/* question */
+.qnum{font-size:14px;font-weight:700;color:var(--muted)}
+.chapter{display:inline-block;font-size:13px;font-weight:800;color:var(--blue);background:var(--ice);padding:4px 10px;border-radius:20px;margin-bottom:8px}
+.qtext{font-size:23px;font-weight:800;line-height:1.6;margin:6px 0 18px}
+body.kids .qtext{font-size:26px;text-align:center}
+body.kids .qnum{text-align:center}
+.guide-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:4px}
+.guide{font-size:52px;animation:bob 2.4s infinite}
+.me{font-size:34px}
+.speak{border:none;background:var(--ice);border-radius:50%;width:46px;height:46px;font-size:20px;cursor:pointer}
+.opts{display:grid;gap:12px}
+.opts.tiles{grid-template-columns:1fr 1fr}
+.opt{font:inherit;text-align:start;cursor:pointer;border:3px solid transparent;border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;font-size:17px;font-weight:700;color:var(--navy);transition:transform .15s,border-color .2s,box-shadow .2s;background:#f5f8ff;line-height:1.6}
+.opt:hover{transform:translateY(-2px);border-color:var(--gold)}
+.opts.tiles .opt{flex-direction:column;justify-content:center;text-align:center;min-height:150px;padding:14px 10px}
+.opt .oe{font-size:48px;line-height:1}
+body.tweens .opt .oe{font-size:38px}
+.opts.tiles .p0{background:#e6f0ff}.opts.tiles .p1{background:#fff4dc}.opts.tiles .p2{background:#e2f6f2}.opts.tiles .p3{background:#ffe9e3}
+.ol{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font-weight:800}
+.opt.sel{border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,188,58,.3)}
+.opt.pop{animation:pop .45s}
+@keyframes pop{40%{transform:scale(1.06)}}
+body.teens .opt{background:rgba(255,255,255,.05);color:#fff;border-color:rgba(255,255,255,.12)}
+body.teens .opt:hover,body.teens .opt.sel{border-color:var(--gold)}
+body.teens .ol{background:var(--gold);color:var(--navy)}
+body.young .opt{background:#fff;border:2px solid #e3e9f5}
+body.young .opt.sel,body.young .opt:hover{border-color:var(--blue)}
+.qnav{margin-top:16px;display:flex}
+.linkbtn{background:none;border:none;font:inherit;color:var(--muted);cursor:pointer;font-weight:700;font-size:15px}
+body.teens .linkbtn{color:#c9cbe8}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(8,8,40,.55);display:grid;place-items:center;z-index:50;padding:16px;animation:enter .25s}
+.mcard{background:#fff;border-radius:28px;padding:30px 24px;text-align:center;max-width:380px;width:100%;color:var(--navy)}
+.micon{font-size:82px;animation:spinpop .7s}
+@keyframes spinpop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.2) rotate(8deg)}100%{transform:none}}
+.mcard h3{font-size:24px;margin:8px 0}
+.mcard p{color:var(--muted);line-height:1.8;margin-bottom:18px}
+body.teens .mcard{background:#11113a;color:#fff;border:1px solid var(--gold)}
+body.teens .mcard p{color:#c9cbe8}
+
+/* loading */
+.loader{font-size:76px;display:inline-block;animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.18)}}
+.lbar{height:8px;background:var(--ice);border-radius:8px;overflow:hidden;margin-top:10px}
+body.teens .lbar{background:rgba(255,255,255,.1)}
+.lbar i{display:block;height:100%;width:0;background:linear-gradient(270deg,var(--cyan),var(--gold));animation:load 2.4s forwards}
+@keyframes load{to{width:100%}}
+
+/* result */
+.result{border-top:8px solid var(--tc)}
+body.teens .result{border-top:8px solid var(--tc)}
+.res-top{display:flex;align-items:center;gap:14px}
+.res-top .mid{flex:1}
+.avatar{font-size:38px;width:64px;height:64px;border-radius:50%;background:var(--ice);display:grid;place-items:center;flex:none}
+body.teens .avatar{background:rgba(255,255,255,.08)}
+.ticon{font-size:54px;width:84px;height:84px;border-radius:24px;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 18%,#fff);flex:none;animation:spinpop .8s}
+.tname{font-size:28px;color:var(--tc);font-weight:800;line-height:1.35}
+.tie{margin-top:12px;background:var(--ice);color:var(--navy);border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.8}
+.tabs{display:flex;gap:8px;margin:18px 0 12px;background:rgba(255,255,255,.65);padding:6px;border-radius:16px}
+.tab{flex:1;font:inherit;font-weight:800;font-size:15px;border:none;background:transparent;padding:10px 6px;border-radius:12px;cursor:pointer;color:var(--navy)}
+.tab.on{background:var(--navy);color:#fff}
+body.teens .tabs,body.youth .tabs{background:rgba(255,255,255,.08)}
+body.teens .tab,body.youth .tab{color:#fff}
+body.teens .tab.on{background:var(--gold);color:var(--navy)}
+body.youth .tab.on{background:#fff;color:var(--navy)}
+.panel{display:none}.panel.on{display:block;animation:enter .35s}
+.sec-t{font-size:18px;font-weight:800;margin:4px 0 12px}
+.bar-row{display:grid;grid-template-columns:minmax(130px,40%) 1fr 46px;align-items:center;gap:10px;margin:10px 0;font-weight:700;font-size:15px}
+.bt{height:12px;background:var(--ice);border-radius:12px;overflow:hidden}
+.bt i{display:block;height:100%;border-radius:12px;width:var(--w);animation:grow 1.1s ease-out}
+@keyframes grow{from{width:0}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 14px;border-radius:30px;font-weight:700;background:color-mix(in srgb,var(--tc) 16%,#fff);color:var(--navy)}
+.tipbox{background:#fff8e8;color:var(--navy);border-inline-start:5px solid var(--gold);padding:14px 16px;border-radius:12px;line-height:1.9;font-weight:600}
+body.teens .bt{background:rgba(255,255,255,.1)}
+body.teens .chip{background:rgba(255,255,255,.08);color:#fff}
+body.teens .tipbox{background:rgba(255,188,58,.1);color:#fff}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.actions .btn{flex:1;min-width:150px}
+
+/* parent guide */
+.pill{display:inline-block;background:var(--navy);color:var(--gold);font-size:13px;font-weight:800;padding:4px 12px;border-radius:20px}
+body.teens .pill{background:var(--gold);color:var(--navy)}
+.pg-head h2{font-size:22px;margin:10px 0 6px;line-height:1.5}
+.pg-head p{line-height:1.9;color:var(--muted)}
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.pg-sec{background:var(--ice);border-radius:14px;padding:14px}
+.pg-sec.warn{background:#ffece7}
+.pg-sec h4,.pg-box h4{font-size:16px;margin-bottom:8px;color:var(--navy)}
+.pg-sec ul,.pg-box ul{padding-inline-start:18px;line-height:1.9;font-size:15px}
+.pg-box{margin-top:14px;border-radius:14px;padding:14px;border:2px dashed var(--cyan)}
+.pg-box.gold{border-color:var(--gold)}
+.disc{margin-top:14px;font-size:13px;color:var(--muted);line-height:1.8}
+body.teens .pg-sec{background:rgba(255,255,255,.06)}
+body.teens .pg-sec.warn{background:rgba(242,100,68,.14)}
+body.teens .pg-sec h4,body.teens .pg-box h4{color:var(--gold)}
+body.teens .pg-head p,body.teens .disc{color:#c9cbe8}
+
+/* certificate */
+.cert{background:#fff;color:var(--navy);border-radius:18px;padding:12px;box-shadow:0 18px 40px -18px rgba(8,8,40,.4)}
+.cert-in{border:3px solid var(--gold);border-radius:12px;padding:28px 20px;text-align:center;position:relative;background:linear-gradient(135deg,#fff 60%,#fff8e8)}
+.cert-in::before{content:"";position:absolute;inset:6px;border:1px solid rgba(8,8,40,.15);border-radius:8px;pointer-events:none}
+.cert .logo{display:flex;justify-content:center}
+.cert .logo svg,.cert .logo img{height:54px}
+.cert-title{font-size:28px;font-weight:800;margin:14px 0 6px}
+.cert-name{font-size:34px;font-weight:800;color:var(--blue);margin:8px 0;border-bottom:2px dashed var(--gold);display:inline-block;padding:0 20px 4px}
+.cert p{line-height:1.9;color:var(--muted)}
+.cert-type{font-size:26px;font-weight:800;margin:8px 0 14px}
+.cert-foot{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);border-top:1px solid #e3e9f5;padding-top:10px;margin-top:10px;gap:8px;flex-wrap:wrap}
+.seal{position:absolute;inset-inline-end:20px;bottom:46px;font-size:46px;transform:rotate(-12deg)}
+.print-logo{margin-bottom:14px}.print-logo svg{height:36px}
+
+@media(max-width:560px){
+ .pg-grid{grid-template-columns:1fr}
+ .opts.tiles .opt{min-height:130px;font-size:16px}
+ .h1{font-size:25px}.qtext{font-size:20px}body.kids .qtext{font-size:22px}
+ .bar-row{grid-template-columns:1fr 46px}.bar-row .bt{grid-column:1/-1;order:3}
+ .tname{font-size:23px}.ticon{width:64px;height:64px;font-size:40px}.avatar{display:none}
+ .tab{font-size:13px}.seal{display:none}.cert-name{font-size:27px}
+}
+@media print{
+ @page{margin:12mm}
+ body.printing>*:not(#printzone){display:none!important}
+ body.printing{background:#fff!important}
+ body.printing #printzone{display:block}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .pg-sec,.pg-box{break-inside:avoid}
+ .cert{box-shadow:none}
+}
+</style>
+</head>
+<body class="setup">
+<div id="decor"></div>
+<header class="top">
+  <div class="logo" id="logo"></div>
+  <div class="tools"><button id="lng" class="icon-btn lang" aria-label="English">EN</button><button id="snd" class="icon-btn" aria-label="Sound">🔊</button></div>
+</header>
+<main id="app"></main>
+<footer class="foot" id="foot"></footer>
+<canvas id="fx"></canvas>
+<div id="printzone"></div>
+
+<script>
+/* ================= إعدادات الهوية =================
+   ضع رابط شعار Skills Bank هنا (PNG أو SVG) ليحل محل الشعار المؤقت:
+   logoUrl      : النسخة الملونة (للخلفيات الفاتحة)
+   logoUrlWhite : النسخة البيضاء (للخلفيات الكحلية)                */
+const BRAND = { logoUrl: 'data:image/png;base64,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', logoUrlWhite: 'data:image/png;base64,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' };
+
+const LOGO_SVG = `<svg viewBox="0 0 176 40" direction="ltr" xmlns="http://www.w3.org/2000/svg"><rect x="136" y="4" width="34" height="32" rx="9" fill="#FFBC3A"/><path d="M160 13c-2-3-12-3-12 2.5s12 3.5 12 9-10 5-12 2" stroke="#080828" stroke-width="3.2" fill="none" stroke-linecap="round"/><text x="128" y="27" text-anchor="end" font-family="Cairo,sans-serif" font-weight="800" font-size="19" fill="currentColor">Skills Bank</text></svg>`;
+
+/* ================= أنماط الشخصية ================= */
+const TYPES = {
+ D:{color:'#F26444',kid:'🦁',icon:'🔥',name:'[المغامر القائد|المغامرة القائدة]',short:'القيادة والإنجاز',
+  desc:'[تحب|تحبين] المغامرة والتحدي، ولا [تخاف|تخافين] من البداية، و[تلهم|تلهمين] من حولك ليتحركوا ويحققوا الأهداف.',
+  descOld:'شخصية حاسمة وطموحة، [تتحمل|تتحملين] المسؤولية بسرعة، و[تنجذب|تنجذبين] إلى الأهداف الكبيرة والتحديات الصعبة.',
+  str:['الشجاعة','روح القيادة','حب التحدي','سرعة الإنجاز'],strOld:['الحسم','الطموح','تحمّل المسؤولية','المبادرة'],
+  tip:'القائد الحقيقي يسمع الجميع؛ [جرّب|جرّبي] أن [تستمع|تستمعي] لآراء من حولك قبل أن [تقرر|تقرري].',
+  tipOld:'السرعة قوة، لكن الإصغاء قبل القرار يحوّلها إلى حكمة.'},
+ I:{color:'#FFBC3A',kid:'🦜',icon:'✨',name:'[النجم المُلهِم|النجمة المُلهِمة]',short:'الحماس والتواصل',
+  desc:'[تملأ|تملئين] المكان بالمرح والأفكار الجديدة، و[تحب|تحبين] الناس ويحبونك، و[تجعل|تجعلين] كل نشاط أكثر متعة.',
+  descOld:'شخصية مؤثرة ومتحمسة، [تبني|تبنين] العلاقات بسهولة، و[تلهم|تلهمين] الآخرين بأفكارك وطاقتك الإيجابية.',
+  str:['المرح','الإبداع','تكوين الصداقات','نشر الحماس'],strOld:['الإقناع','التفاؤل','بناء العلاقات','الإبداع'],
+  tip:'أفكارك رائعة! [حاول|حاولي] أن [تُكمل|تُكملي] ما [تبدأه|تبدئينه] قبل أن [تنتقل|تنتقلي] إلى شيء جديد.',
+  tipOld:'حوّل حماسك إلى نتائج بخطة واضحة ومتابعة مستمرة.'},
+ S:{color:'#40BDA9',kid:'🐬',icon:'🤝',name:'[صاحب القلب الدافئ|صاحبة القلب الدافئ]',short:'الطيبة والتعاون',
+  desc:'قلبك كبير! [تهتم|تهتمين] بمن حولك، و[تحب|تحبين] أن يكون الجميع سعداء ومرتاحين، والكل يثق بك.',
+  descOld:'شخصية داعمة ووفية، [تمنح|تمنحين] من حولك الأمان، و[تقدّر|تقدّرين] الاستقرار والعلاقات العميقة.',
+  str:['الطيبة','الوفاء','مساعدة الآخرين','الهدوء'],strOld:['الإصغاء','الوفاء','روح الفريق','الصبر'],
+  tip:'مشاعرك مهمة مثل مشاعر الآخرين؛ [قل|قولي] ما [تريده|تريدينه] بصراحة ولطف.',
+  tipOld:'قول «لا» أحيانًا جزء من الاهتمام بنفسك، لا أنانية.'},
+ C:{color:'#4D88E8',kid:'🦉',icon:'🧠',name:'[المفكر المستكشف|المفكرة المستكشفة]',short:'التفكير والدقة',
+  desc:'عقلك مليء بالأسئلة! [تحب|تحبين] أن [تفهم|تفهمي] كيف تعمل الأشياء، و[تتقن|تتقنين] كل ما [تفعله|تفعلينه].',
+  descOld:'شخصية تحليلية ودقيقة، [تبحث|تبحثين] عن الفهم العميق، و[تحرص|تحرصين] على الجودة والتفكير قبل القرار.',
+  str:['الذكاء','الدقة','حب الاستكشاف','التنظيم'],strOld:['التحليل','الدقة','التخطيط','التعلّم العميق'],
+  tip:'الخطأ جزء من التعلم؛ لا بأس أن [تجرّب|تجرّبي] قبل أن [تكون متأكدًا|تكوني متأكدة] تمامًا.',
+  tipOld:'«الجيد جدًا» الآن أفضل أحيانًا من «الكامل» لاحقًا.'}
+};
+
+/* ================= دليل الوالدين ================= */
+const PG_LABELS = {motivate:['🚀','ما يحفّز{h}'],talk:['💬','كيف تتحدث مع{h}'],limits:['🧭','الحدود والانضباط'],study:['📚','المذاكرة والمدرسة'],stress:['🌡️','علامات القلق والضغط'],avoid:['⛔','تجنّب']};
+const GUIDE = {
+ D:{motivate:['قدّم ل{h} تحديات وأهدافًا واضحة يمكن قياسها','امنح{h} خيارات بدل الأوامر المباشرة: «أيهما [تبدأ|تبدئين] أولًا؟»','احتفِ بالإنجاز والنتيجة'],
+  talk:['كن مباشرًا ومختصرًا، وابدأ بالنقطة الأساسية','ناقش{h} باحترام، وتجنّب الدخول مع{h} في صراع قوة'],
+  limits:['قواعد قليلة وواضحة، وعواقب ثابتة معروفة مسبقًا','أشرك{h} في وضع بعض القواعد ل{y}شعر بالمسؤولية'],
+  study:['حوّل المذاكرة إلى تحدٍّ مع الوقت أو هدف يومي','اسمح ل{h} بتنظيم يوم{h} ضمن إطار متفق عليه'],
+  stress:['العناد الزائد وسرعة الغضب قد يكونان علامة ضغط لا قلة احترام','الرغبة المفرطة في السيطرة حين {y}شعر بفقدان الأمان'],
+  avoid:['التوبيخ أو الإحراج أمام الآخرين','فرض السيطرة الكاملة دون حوار']},
+ I:{motivate:['المدح والتقدير الصادق لجهود{h}، خاصة أمام الآخرين','ربط المهام بالمتعة واللعب والتفاعل'],
+  talk:['امنح{h} مساحة ل{y}حكي و{y}عبّر، واستمع بحماس','استخدم القصص والأمثلة بدل المحاضرات الطويلة'],
+  limits:['تذكيرات مرئية ومرحة للقواعد (لوحات وملصقات)','كن ثابتًا بلطف؛ فالمزاح لا يلغي القاعدة'],
+  study:['جلسات قصيرة مع فواصل وألوان وأنشطة','المذاكرة مع زميل أو بصوت عالٍ تناسب{h} كثيرًا'],
+  stress:['الانسحاب المفاجئ من الأصدقاء أو فقدان الحماس المعتاد','التشتت الزائد والنسيان المتكرر'],
+  avoid:['التجاهل أو السخرية من أفكار{h}','العزل الطويل كعقاب']},
+ S:{motivate:['الشعور بالأمان والحب غير المشروط','الشكر الصريح على مساعدت{h} ولطف{h}'],
+  talk:['تحدّث بهدوء ودون صراخ','اسأل{h} عن مشاعر{h} بأسئلة مفتوحة؛ فقد لا {y}بادر بالكلام'],
+  limits:['روتين ثابت ومتوقع يطمئن{h}','مهّد مسبقًا لأي تغيير (مدرسة جديدة، انتقال، سفر)'],
+  study:['جو هادئ وتشجيع مستمر، وقرب أحد الوالدين يساعد كثيرًا','قسّم المهام الكبيرة إلى خطوات صغيرة'],
+  stress:['الصمت الزائد والانطواء','آلام البطن أو الصداع صباح أيام المدرسة قد تعبّر عن قلق مكتوم'],
+  avoid:['المقارنة بالإخوة أو الزملاء','الخلافات الحادة أمام{h}']},
+ C:{motivate:['الفهم العميق والإتقان وتعلّم الجديد','التقدير لدقت{h} وجودة عمل{h}'],
+  talk:['اشرح الأسباب دائمًا ولا تكتفِ بـ«لأنني قلت ذلك»','امنح{h} وقتًا للتفكير قبل انتظار الرد'],
+  limits:['قواعد منطقية ومكتوبة وواضحة','كن متسقًا؛ فالتناقض يربك{h}'],
+  study:['خطة منظمة ومصادر واضحة ومكان هادئ','ساعد{h} على تقبّل الخطأ كجزء طبيعي من التعلم'],
+  stress:['الكمالية الزائدة والخوف من الخطأ','تأجيل البدء خوفًا من عدم الإتقان'],
+  avoid:['النقد الحاد للأخطاء','الاستعجال والمفاجآت دون تمهيد']}
+};
+const STAGE_TIPS = {
+ kids:{D:['امنح{h} مسؤوليات صغيرة مثل ترتيب ألعاب{h} أو قيادة لعبة عائلية','استخدم لوحة نجوم للإنجازات اليومية'],
+  I:['اجعل روتين الصباح أغنية أو لعبة','خصّص وقتًا يوميًا ل{y}حكي لك عن يوم{h}'],
+  S:['مهّد لأول يوم دراسي بزيارة المدرسة مسبقًا','ضع في حقيبت{h} ورقة صغيرة فيها رسالة حب'],
+  C:['أجب عن أسئلت{h} الكثيرة بصبر، أو ابحثا معًا عن الإجابة','استخدم جدولًا مصورًا ليوم{h}']},
+ tweens:{D:['أشرك{h} في مسابقات وأنشطة رياضية منظمة','اتفقا على أهداف دراسية أسبوعية، ودع{h} {y}ختار المكافأة'],
+  I:['شجّع{h} على نشاط جماعي كالمسرح أو الإذاعة المدرسية','نظّم وقت الشاشة بلطف مع بدائل اجتماعية ممتعة'],
+  S:['تابع علاقات{h} بالأصدقاء؛ فالرفض الاجتماعي يؤلم{h} بعمق','علّم{h} أن {y}قول «لا» بلطف'],
+  C:['وفّر كتبًا وألعاب ألغاز وتجارب علمية','درّب{h} على العرض أمام الآخرين تدريجيًا']},
+ teens:{D:['ناقش{h} كندّ، وامنح{h} قرارات حقيقية ضمن حدود آمنة','اختر معاركك بحكمة، ولا تجعل كل خلاف صراع قوة'],
+  I:['اهتم بعالم{h} الرقمي، واسأل عن أصدقائ{h} دون تحقيق','ساعد{h} على تنظيم الوقت بأدوات ممتعة'],
+  S:['كن الحضن الآمن الذي {y}عود إليه دون أحكام','انتبه لتأثير الأصدقاء؛ فقد {y}جامل على حساب نفس{h}'],
+  C:['احترم خصوصيت{h} ووقت{h} الخاص','ناقش{h} في الأفكار الكبيرة؛ فذلك يقرّبك من{h}']},
+ youth:{D:['دع{h} {y}قود قرار التخصص مع توفير المعلومات اللازمة','حوّل الخلاف إلى تفاوض على الحلول'],
+  I:['ساعد{h} على موازنة الحياة الاجتماعية مع المذاكرة بخطة مرنة','احتفِ بكل تقدم ولو صغيرًا'],
+  S:['طمئن{h} أن حبك غير مرتبط بالدرجات','راقب علامات القلق والأرق في فترة الامتحانات'],
+  C:['وفّر معلومات دقيقة عن التخصصات وسوق العمل','خفّف من الكمالية: «الجيد جدًا» أحيانًا كافٍ']},
+ young:{D:['تحوّل من دور الموجّه إلى دور المستشار','ثق في قرارات{h} واسمح ل{h} بالتعلم من التجربة'],
+  I:['شجّع{h} على تحويل شغف{h} إلى مسار مهني','كن مستمعًا لأحلام{h} قبل تقييمها'],
+  S:['شجّع استقلال{h} تدريجيًا، وطمئن{h} أن البيت سند دائم','ساعد{h} على وضع حدود صحية مع الآخرين'],
+  C:['احترم حاجت{h} للخصوصية والتفكير المستقل','ناقش{h} في الخطط بالأرقام والمنطق']}
+};
+
+/* ================= المراحل والأسئلة ================= */
+const dyn = () => { const k = leader(), T = TYP(k); return {i:T.icon,t:UI[state.lang].dynT,x:UI[state.lang].dynX(T.short)}; };
+const STAGES = {
+ kids:{label:'مرحلة الطفولة (4 – 9 سنوات)',theme:'جزيرة الكنز',icon:'🏝️',guide:'🐘',layout:'tiles',progress:'stars',speak:true,
+  intro:'أهلًا يا {name}! أنا فيلو 🐘. هيا نبحث معًا عن كنوز شخصيتك في جزيرة الكنز. [اختر|اختاري] الصورة التي تشبهك، ومع كل إجابة [تقترب|تقتربين] من الكنز!',
+  cta:'هيا نبدأ المغامرة! 🚀',
+  parent:'مرحلة الاكتشاف واللعب وبناء الثقة؛ يتعلم الطفل من القدوة والروتين والحب أكثر من الكلام.',
+  rewards:[{i:'💎',t:'وجدت جوهرة لامعة!',x:'[أحسنت|أحسنتِ] يا {name}! هيا نكمل البحث عن الكنز.'},{i:'👑',t:'وجدت تاجًا ذهبيًا!',x:'[أنت رائع|أنتِ رائعة]! الكنز أصبح قريبًا جدًا.'},{i:'🗝️',t:'حصلت على مفتاح الكنز!',x:'بقي سؤال واحد فقط لنفتح الصندوق!'}],
+  loading:['نفتح صندوق الكنز... 🗝️','نجمع الجواهر... 💎','ها هو الكنز! ✨'],
+  q:[
+   {q:'في الحديقة، ماذا [تحب|تحبين] أن [تفعل|تفعلي] أولًا؟',o:[['D','🧗','أتسلّق أعلى لعبة'],['I','🎉','ألعب مع كل الأطفال'],['S','🤝','ألعب مع [صديقي المفضّل|صديقتي المفضّلة]'],['C','🐞','أكتشف الحشرات والأشجار']]},
+   {q:'لو معك صندوق ألوان جديد، ماذا [ترسم|ترسمين]؟',o:[['D','🚀','صاروخًا سريعًا جدًا'],['I','🎪','حفلة كبيرة ملوّنة'],['S','🏡','بيتي وعائلتي'],['C','🏰','قلعة فيها تفاصيل كثيرة']]},
+   {q:'إذا بكى [صديقك|صديقتك] في الفصل، ماذا [تفعل|تفعلين]؟',o:[['S','🫂','[أجلس بجانبه وأواسيه|أجلس بجانبها وأواسيها]'],['I','😂','[أحكي له نكتة ليضحك|أحكي لها نكتة لتضحك]'],['D','🏃','أنادي المعلمة بسرعة'],['C','❓','[أسأله|أسألها]: ماذا حدث؟']]},
+   {q:'لو [تحولت|تحولتِ] إلى حيوان ليوم واحد، ماذا [تكون|تكونين]؟',o:[['D','🐆','فهدًا سريعًا'],['I','🦚','طاووسًا ملوّنًا'],['S','🐼','باندا لطيفًا'],['C','🐙','أخطبوطًا ذكيًا']]},
+   {q:'في اللعب الجماعي، [أنت|أنتِ] غالبًا...',o:[['D','👑','من يقول: هيا نلعب هكذا!'],['I','📣','من يضحك ويشجّع الجميع'],['S','🙂','من يساعد الآخرين'],['C','📏','من يتأكد أن الجميع يتبع القواعد']]},
+   {q:'حصلت على هدية مغلّفة، ماذا [تفعل|تفعلين]؟',o:[['D','💥','أفتحها فورًا!'],['I','📸','أريها لكل من حولي'],['S','💌','أشكر من أهداني إياها أولًا'],['C','🔍','أخمّن ما بداخلها قبل فتحها']]},
+   {q:'ما أجمل شيء في يوم المدرسة؟',o:[['D','🏆','أن أكون الأول'],['I','🗣️','أن أتكلم مع أصحابي'],['S','🍎','أن تكون المعلمة سعيدة مني'],['C','📚','أن أتعلم شيئًا جديدًا']]},
+   {q:'عندما يقول لك بابا أو ماما: «لا»...',o:[['D','😤','أحاول أن أقنعهما'],['I','🥺','أضحكهما لعلهما يغيّران رأيهما'],['S','😔','أحزن قليلًا ثم أسمع الكلام'],['C','🤔','أسأل: لماذا لا؟']]},
+   {q:'لو [كنت بطلًا خارقًا|كنتِ بطلة خارقة]، ما قوتك؟',o:[['D','💪','القوة الخارقة'],['I','🌈','أجعل الجميع سعداء'],['S','🩹','أعالج أي شخص مريض'],['C','🧠','أعرف كل شيء']]},
+   {q:'قبل النوم [تحب|تحبين]...',o:[['D','⚡','أن أكمل اللعب!'],['I','🎶','أن أسمع أغنية مرحة'],['S','🤗','حضنًا دافئًا من ماما أو بابا'],['C','📖','قصة فيها ألغاز']]}
+  ]},
+ tweens:{label:'مرحلة الطفولة المتأخرة (10 – 12 سنة)',theme:'رحلة الأبطال',icon:'🗺️',guide:'🧭',layout:'tiles',progress:'map',speak:true,
+  intro:'مرحبًا يا {name}! أمامك خريطة من 4 مراحل، وفي كل مرحلة [تربح|تربحين] شارة جديدة. [أجب|أجيبي] بصدق [لتكتشف|لتكتشفي] قوتك الخارقة!',
+  cta:'انطلق في الرحلة! 🗺️',
+  parent:'مرحلة الإنجاز وبناء الكفاءة؛ تزداد أهمية الأصدقاء والمقارنة بالآخرين، ويبدأ الطفل في تكوين صورته عن نفسه.',
+  rewards:[{i:'🥉',t:'شارة المستكشف',x:'[أنهيت|أنهيتِ] المرحلة الأولى بنجاح!'},{i:'🥈',t:'شارة المغامر',x:'[أنت|أنتِ] في منتصف الرحلة، [استمر|استمري]!'},{i:'🥇',t:'شارة البطل',x:'المرحلة الأخيرة! قوتك الخارقة على وشك الظهور.'}],
+  loading:['نرسم خريطة شخصيتك... 🗺️','نكتشف قوتك الخارقة... ⚡','ها هي النتيجة! ✨'],
+  q:[
+   {q:'في رحلة مدرسية، أي دور [تختار|تختارين]؟',o:[['D','🧭','قائد الفريق الذي يحدد الطريق'],['I','🎤','المسؤول عن الأغاني والمرح'],['S','🤝','من يتأكد أن لا أحد وحيد'],['C','🗺️','حامل الخريطة ومنظّم الجدول']]},
+   {q:'لديك مشروع جماعي، أول ما [تفعله|تفعلينه]:',o:[['D','⚡','أوزّع المهام بسرعة'],['I','💡','أجمع أفكارًا كثيرة من الجميع'],['S','🙋','أسأل كل واحد ماذا يحب أن يعمل'],['C','📋','أقرأ المطلوب بدقة وأخطّط']]},
+   {q:'أي لعبة [تفضّل|تفضّلين]؟',o:[['D','⚽','سباق أو منافسة'],['I','🎲','لعبة جماعية مليئة بالضحك'],['S','🧩','لعبة تعاونية نفوز فيها معًا'],['C','♟️','لغز أو لعبة استراتيجية']]},
+   {q:'تشاجر اثنان من أصدقائك، ماذا [تفعل|تفعلين]؟',o:[['D','🗯️','أقول لهما رأيي بصراحة'],['I','😄','أحاول أن أضحكهما لينسيا'],['S','🕊️','أهدّئ كل واحد وأسمعه'],['C','🔎','أفهم سبب المشكلة ثم أقترح حلًا']]},
+   {q:'حصلت على درجة أقل مما [توقعت|توقعتِ]:',o:[['D','🔥','أقرر أن أتفوق في المرة القادمة'],['I','💬','أحكي لأصحابي وننساها سريعًا'],['S','😟','أقلق من رأي والديّ ومعلمي'],['C','📝','أراجع أخطائي لأعرف المشكلة']]},
+   {q:'في وقت الفراغ [تحب|تحبين]:',o:[['D','🏀','تحديًا جديدًا أو رياضة'],['I','🛼','الخروج مع الأصدقاء'],['S','🏡','الجلوس مع العائلة'],['C','🔬','القراءة أو تجربة شيء بيدي']]},
+   {q:'إذا تغيّرت خطة اليوم فجأة:',o:[['D','😎','لا مشكلة، أقرر الخطة الجديدة'],['I','🤩','رائع! مغامرة جديدة'],['S','😐','أتضايق قليلًا لكن أتأقلم'],['C','🧐','أحتاج أن أعرف التفاصيل']]},
+   {q:'أكثر جملة تفرحك:',o:[['D','🏅','«[أنجزتها بسرعة يا بطل|أنجزتها بسرعة يا بطلة]!»'],['I','🌟','«[أنت رائع|أنتِ رائعة]، الكل يحبك»'],['S','💚','«شكرًا لأنك ساعدتني»'],['C','🎯','«إجابتك دقيقة وذكية»']]},
+   {q:'في الفصل [أنت|أنتِ] غالبًا:',o:[['D','✋','أول من يرفع يده'],['I','🎭','من يجعل الفصل مرحًا'],['S','🤲','[الهادئ الذي يساعد زملاءه|الهادئة التي تساعد زميلاتها]'],['C','❔','من يسأل أسئلة كثيرة']]},
+   {q:'لو [كنت مخترعًا|كنتِ مخترعة]، ماذا [تخترع|تخترعين]؟',o:[['D','🏎️','سيارة أسرع من الجميع'],['I','📱','تطبيقًا يجمع الأصدقاء'],['S','🤖','روبوتًا يساعد كبار السن'],['C','⚙️','آلة تحل أي مسألة']]},
+   {q:'أكثر شيء يضايقك:',o:[['D','⛓️','أن يتحكم فيّ أحد'],['I','🙁','أن أبقى وحدي بلا أحد'],['S','💢','أن يتشاجر من حولي'],['C','🌀','الفوضى والأشياء غير الواضحة']]},
+   {q:'في ألعاب الفيديو [تحب|تحبين] أن:',o:[['D','🏆','أفوز وأصل للمركز الأول'],['I','🎮','ألعب أونلاين مع أصحابي'],['S','👫','ألعب مع أخي أو صديقي في فريق واحد'],['C','🗝️','أكتشف كل الأسرار والمراحل المخفية']]}
+  ]},
+ teens:{label:'مرحلة المراهقة المبكرة (13 – 15 سنة)',theme:'المهمة السرية',icon:'🕶️',guide:'🕵️',layout:'list',progress:'xp',
+  intro:'مرحبًا [أيها العميل|أيتها العميلة] {name}. مهمتك: كشف ملفك الشخصي السري. أمامك 12 موقفًا، وكل قرار يرفع رتبتك. لا توجد إجابة خاطئة... فقط إجابتك الحقيقية.',
+  cta:'ابدأ المهمة 🕶️',
+  parent:'بداية المراهقة والبحث عن الهوية؛ يحتاج المراهق إلى الاستقلالية والاحترام أكثر من التوجيه المباشر، ويتأثر بشدة برأي الأصدقاء.',
+  ranks:['[مستكشف مبتدئ|مستكشفة مبتدئة]','[عميل ميداني|عميلة ميدانية]','[عميل خاص|عميلة خاصة]','[عميل نخبة|عميلة نخبة]'],
+  rewards:[{i:'🎖️',t:'ترقية!',x:'رتبتك الجديدة: [عميل ميداني|عميلة ميدانية]'},{i:'🏅',t:'ترقية جديدة!',x:'رتبتك الآن: [عميل خاص|عميلة خاصة]. أداء ممتاز!'},{i:'🏆',t:'رتبة النخبة!',x:'[أصبحت عميل نخبة|أصبحتِ عميلة نخبة]. الملف على وشك الانكشاف.'}],
+  loading:['جارٍ فك تشفير الملف... 🔐','تحليل القرارات... 🧩','الملف جاهز 🔓'],
+  q:[
+   {q:'فريقك في مسابقة مدرسية والوقت يضيق. دورك:',o:[['D','','أمسك الزمام وأوزّع الأدوار'],['I','','أرفع حماس الفريق'],['S','','أدعم من يشعر بالضغط'],['C','','أراجع التفاصيل لتجنب الأخطاء']]},
+   {q:'رأيك يختلف عن رأي أصحابك في موضوع ما:',o:[['D','','أدافع عن رأيي بقوة'],['I','','أعرضه بطريقة مرحة وأقنعهم'],['S','','أحتفظ به غالبًا حتى لا نختلف'],['C','','أشرح أسبابي بالمنطق والأدلة']]},
+   {q:'عطلة نهاية الأسبوع المثالية:',o:[['D','','نشاط فيه تحدٍّ ومغامرة'],['I','','تجمّع كبير مع الأصدقاء'],['S','','وقت هادئ مع المقرّبين'],['C','','وقت لهوايتي أو لتعلم شيء جديد']]},
+   {q:'حين يطلب منك والداك شيئًا لا [تقتنع|تقتنعين] به:',o:[['D','','أرفض وأناقش بحدة أحيانًا'],['I','','أحاول التفاوض بلطف ومزاح'],['S','','أنفّذ حتى لو [كنت غير مقتنع|كنتُ غير مقتنعة]'],['C','','أطلب أن أفهم السبب أولًا']]},
+   {q:'على وسائل التواصل الاجتماعي:',o:[['D','','أنشر إنجازاتي وآرائي'],['I','','أتفاعل مع الجميع وأنشر كثيرًا'],['S','','أتابع أصدقائي وأدعمهم'],['C','','أتابع محتوى أتعلم منه وقليلًا ما أنشر']]},
+   {q:'قبل الامتحان:',o:[['D','','أضع هدفًا عاليًا وأتحدى نفسي'],['I','','أذاكر مع أصحابي بشكل أفضل'],['S','','أتوتر وأحتاج من يطمئنني'],['C','','أعمل جدولًا منظمًا وأسير عليه']]},
+   {q:'[زميل جديد انضم للفصل ويبدو وحيدًا|زميلة جديدة انضمت للفصل وتبدو وحيدة]:',o:[['D','','[أدعوه للانضمام إلى فريقي|أدعوها للانضمام إلى فريقي]'],['I','','[أعرّفه|أعرّفها] على الجميع فورًا'],['S','','[أجلس معه وأسأله عن حاله|أجلس معها وأسألها عن حالها]'],['C','','[أراقبه أولًا ثم أتعرّف عليه بهدوء|أراقبها أولًا ثم أتعرّف عليها بهدوء]']]},
+   {q:'أكثر ما يحفّزك:',o:[['D','','الفوز والتحدي'],['I','','التقدير والإعجاب من الناس'],['S','','أن يكون من أحبهم سعداء'],['C','','أن أفهم وأتقن']]},
+   {q:'حين [تغضب|تغضبين]:',o:[['D','','أنفجر بسرعة ثم أهدأ'],['I','','أعبّر بصوت عالٍ ثم أنسى'],['S','','أكتم وأنسحب'],['C','','أصمت وأفكر كثيرًا فيما حدث']]},
+   {q:'في العمل الجماعي، أكثر ما يزعجك:',o:[['D','','البطء والتردد'],['I','','الجو الممل'],['S','','الخلافات والصراخ'],['C','','الإهمال وعدم الدقة']]},
+   {q:'لو معك ميزانية لمشروع صغير:',o:[['D','','أبدأ فورًا وأتعلم أثناء الطريق'],['I','','فكرة مبتكرة يتحدث عنها الجميع'],['S','','مشروع يساعد الناس'],['C','','أدرس السوق جيدًا قبل البدء']]},
+   {q:'أصدقاؤك يصفونك بأنك:',o:[['D','','[جريء وحاسم|جريئة وحاسمة]'],['I','','[مرح واجتماعي|مرحة واجتماعية]'],['S','','[طيب ووفي|طيبة ووفية]'],['C','','[ذكي ودقيق|ذكية ودقيقة]']]}
+  ]},
+ youth:{label:'مرحلة المراهقة المتأخرة (16 – 18 سنة)',theme:'اكتشف نسختك',icon:'🚀',guide:'🚀',layout:'list',progress:'bar',
+  chapters:['أسلوبي','علاقاتي','ما يحرّكني','طريقي'],
+  intro:'أهلًا {name} 👋 هذا ليس امتحانًا؛ إنه مرآة. 12 سؤالًا في 4 فصول تساعدك على فهم أسلوبك في التفكير والتعامل واتخاذ القرار.',
+  cta:'ابدأ الاكتشاف',
+  parent:'مرحلة القرارات المصيرية وضغط الامتحانات واختيار التخصص؛ يحتاج الابن إلى شريك حوار لا إلى رقيب.',
+  rewards:[dyn,dyn,dyn],
+  loading:['نحلل إجاباتك...','نرسم ملامح شخصيتك...','تقريرك جاهز ✨'],
+  q:[
+   {q:'حين [تتخذ|تتخذين] قرارًا مهمًا (مثل اختيار الشعبة أو التخصص):',o:[['D','','أحسم بسرعة وأتحمل النتيجة'],['I','','أتبع شغفي وما يلهمني'],['S','','أستشير أهلي ومن أثق بهم'],['C','','أجمع المعلومات وأقارن الخيارات بعناية']]},
+   {q:'ضغط الامتحانات يجعلني:',o:[['D','','أكثر إصرارًا وتنافسية'],['I','','أبحث عن متنفس مع أصدقائي'],['S','','[قلقًا|قلقة] وأحتاج دعمًا معنويًا'],['C','','أكثر تنظيمًا وتدقيقًا']]},
+   {q:'في النقاش:',o:[['D','','أقول رأيي مباشرة'],['I','','أحب أن أكون محور الحديث'],['S','','أستمع أكثر مما أتكلم'],['C','','أسأل وأتحقق من المعلومة']]},
+   {q:'علاقتي بالقواعد:',o:[['D','','أتحداها إن لم تعجبني'],['I','','أنساها أحيانًا وسط الحماس'],['S','','ألتزم بها حفاظًا على الهدوء'],['C','','ألتزم بها إن كانت منطقية']]},
+   {q:'أنجز أفضل حين:',o:[['D','','تكون لديّ صلاحية وحرية'],['I','','يكون العمل ممتعًا ومع الناس'],['S','','يكون الجو مستقرًا ومشجعًا'],['C','','تكون التعليمات واضحة والوقت كافيًا']]},
+   {q:'أكثر ما أخشاه:',o:[['D','','الفشل أو الظهور بمظهر الضعيف'],['I','','الرفض أو التجاهل'],['S','','خسارة من أحب أو الخلاف معهم'],['C','','الخطأ أو الانتقاد']]},
+   {q:'في أوقات الحزن أحتاج:',o:[['D','','مساحتي وأن أتصرف بنفسي'],['I','','من أفضفض له وأضحك معه'],['S','','حضنًا وكلمة طيبة'],['C','','وقتًا لأفهم ما أشعر به']]},
+   {q:'أرى مستقبلي المهني في:',o:[['D','','قيادة مشروع أو شركة'],['I','','مجال فيه جمهور وتأثير وإبداع'],['S','','مجال أساعد فيه الناس'],['C','','مجال تخصصي يعتمد على المعرفة والتحليل']]},
+   {q:'حين يوجّه لي والداي نصيحة:',o:[['D','','أقبلها إن تركا لي القرار'],['I','','أقبلها إن قيلت بحب ودون محاضرة'],['S','','أقبلها غالبًا وأقدّر اهتمامهما'],['C','','أقبلها إن كانت مقنعة بالأسباب']]},
+   {q:'تعاملي مع الوقت:',o:[['D','','أنجز الكثير بسرعة'],['I','','أتأخر أحيانًا لانشغالي بالناس'],['S','','أحافظ على روتيني المعتاد'],['C','','أخطط وأنظّم وأحترم المواعيد']]},
+   {q:'الإنجاز الذي أفخر به أكثر:',o:[['D','','تحقيق هدف صعب'],['I','','أن [أكون محبوبًا ومؤثرًا|أكون محبوبة ومؤثرة]'],['S','','أن أكون سندًا لغيري'],['C','','إتقان مهارة بعمق']]},
+   {q:'كلمة واحدة تصفني:',o:[['D','','الطموح'],['I','','الحماس'],['S','','الوفاء'],['C','','العمق']]}
+  ]},
+ young:{label:'مرحلة الشباب (19 سنة فأكثر)',theme:'بوصلة الذات',icon:'🧭',guide:'🧭',layout:'list',progress:'bar',
+  chapters:['الأسلوب','العلاقات','تحت الضغط','المستقبل'],
+  intro:'أهلًا {name}. هذه البوصلة تساعدك على فهم أسلوبك في العمل والعلاقات واتخاذ القرار، لتعرف نقاط قوتك وكيف [تستثمرها|تستثمرينها].',
+  cta:'ابدأ',
+  parent:'مرحلة الاستقلال وبناء المستقبل؛ تتحول العلاقة من التربية المباشرة إلى الإرشاد والصداقة والاحترام المتبادل.',
+  rewards:[dyn,dyn,dyn],
+  loading:['نحلل إجاباتك...','نحدد اتجاه بوصلتك...','تقريرك جاهز ✨'],
+  q:[
+   {q:'في الجامعة أو العمل الجماعي، دوري الطبيعي:',o:[['D','','القائد الذي يحدد الاتجاه'],['I','','صانع العلاقات والحماس'],['S','','الداعم الذي يحافظ على تماسك الفريق'],['C','','المحلل الذي يضمن الجودة']]},
+   {q:'عند مواجهة مشكلة معقدة:',o:[['D','','أتحرك بسرعة لحلها'],['I','','أناقشها مع الآخرين لتوليد أفكار'],['S','','أبحث عن حل يرضي الجميع'],['C','','أحللها خطوة بخطوة']]},
+   {q:'مصدر طاقتي:',o:[['D','','الإنجاز والتقدم'],['I','','الناس والتجارب الجديدة'],['S','','العلاقات القريبة والاستقرار'],['C','','الهدوء والتعلم']]},
+   {q:'علاقتي بأسرتي الآن:',o:[['D','','أريد استقلالًا واضحًا في قراراتي'],['I','','قريبة ومليئة بالحوار والمرح'],['S','','قوية وأحرص على رضاهم'],['C','','أقدّرها وأحتاج احترام مساحتي الخاصة']]},
+   {q:'حين أتلقى نقدًا:',o:[['D','','أدافع ثم أعيد التفكير'],['I','','أتأثر إن كان أمام الناس'],['S','','أتألم داخليًا وأحاول الإرضاء'],['C','','أفحصه بموضوعية']]},
+   {q:'أسلوبي في التواصل:',o:[['D','','مباشر ومختصر'],['I','','حماسي ومعبّر'],['S','','ودود وصبور'],['C','','دقيق ومدروس']]},
+   {q:'تحت الضغط:',o:[['D','','[أصبح حادًا ومتسرعًا|أصبح حادة ومتسرعة] أحيانًا'],['I','','أتشتت وأبالغ في الوعود'],['S','','أتردد وأتجنب المواجهة'],['C','','أغرق في التفاصيل وأؤجل القرار']]},
+   {q:'بيئة العمل المثالية لي:',o:[['D','','أهداف طموحة ومسؤولية'],['I','','تعاون وتنوع وحرية إبداع'],['S','','فريق متماسك وثقة'],['C','','معايير واضحة ووقت للتركيز']]},
+   {q:'حين أختلف مع صديق مقرّب:',o:[['D','','أواجه مباشرة'],['I','','أتكلم كثيرًا لأصفّي الجو'],['S','','أتنازل حفاظًا على العلاقة'],['C','','أحتاج وقتًا لترتيب أفكاري قبل الحديث']]},
+   {q:'أتعلم أفضل من خلال:',o:[['D','','التجربة المباشرة والتحدي'],['I','','النقاش والعمل الجماعي'],['S','','أمثلة عملية ومرشد يدعمني'],['C','','القراءة والبحث المعمّق']]},
+   {q:'النجاح بالنسبة لي:',o:[['D','','التأثير والإنجاز الملموس'],['I','','التقدير والسمعة الطيبة'],['S','','حياة متوازنة وعلاقات سعيدة'],['C','','الخبرة والتميّز المعرفي']]},
+   {q:'أكثر ما أحتاجه من والديّ الآن:',o:[['D','','الثقة في قراراتي'],['I','','التشجيع والاحتفاء بي'],['S','','الدعم والطمأنينة'],['C','','الاحترام والنقاش العقلاني']]}
+  ]}
+};
+
+const AVATARS = {m:['👦','🦸‍♂️','🧑‍🚀','🥷','🧙‍♂️','🤴'],f:['👧','🦸‍♀️','👩‍🚀','🧚‍♀️','🧙‍♀️','👸'],older:['🎮','⚽','🎨','🎧','📚','💻']};
+const DECOR = {setup:['✨','🧩','⭐','💡'],kids:['☁️','🌴','🐚','⭐','☁️','🦀'],tweens:['🗺️','⛰️','🧭','🌟','🏕️'],teens:['✦','✧','·','✦','·','✧','✦'],youth:['◆','●','▲'],young:[]};
+
+/* ================= English content ================= */
+const TYPES_EN = {
+ D:{name:'The Brave Leader',short:'leadership & achievement',
+  desc:'You love adventure and challenges, you are never afraid to start, and you inspire the people around you to move and reach goals.',
+  descOld:'Decisive and ambitious — you take responsibility quickly and are drawn to big goals and tough challenges.',
+  str:['Courage','Leadership','Love of challenge','Getting things done'],strOld:['Decisiveness','Ambition','Ownership','Initiative'],
+  tip:'Real leaders listen to everyone — try hearing the ideas of people around you before you decide.',
+  tipOld:'Speed is a strength; listening before deciding turns it into wisdom.'},
+ I:{name:'The Inspiring Star',short:'enthusiasm & connection',
+  desc:'You fill every place with fun and new ideas, people love being around you, and you make every activity more exciting.',
+  descOld:'Influential and energetic — you build relationships easily and inspire others with your ideas and positive energy.',
+  str:['Fun','Creativity','Making friends','Spreading energy'],strOld:['Persuasion','Optimism','Relationship building','Creativity'],
+  tip:'Your ideas are amazing! Try to finish what you start before jumping to something new.',
+  tipOld:'Turn your enthusiasm into results with a clear plan and steady follow-through.'},
+ S:{name:'The Warm Heart',short:'kindness & teamwork',
+  desc:'Your heart is big! You care about the people around you, you want everyone to feel happy and comfortable, and everyone trusts you.',
+  descOld:'Supportive and loyal — you give the people around you a sense of safety, and you value stability and deep relationships.',
+  str:['Kindness','Loyalty','Helping others','Calmness'],strOld:['Listening','Loyalty','Team spirit','Patience'],
+  tip:'Your feelings matter as much as everyone else’s — say what you want, kindly and clearly.',
+  tipOld:'Saying “no” sometimes is part of taking care of yourself, not selfishness.'},
+ C:{name:'The Curious Thinker',short:'thinking & precision',
+  desc:'Your mind is full of questions! You love understanding how things work, and you do everything carefully and well.',
+  descOld:'Analytical and precise — you look for deep understanding and care about quality and thinking before deciding.',
+  str:['Smart thinking','Accuracy','Curiosity','Organization'],strOld:['Analysis','Precision','Planning','Deep learning'],
+  tip:'Mistakes are part of learning — it’s okay to try before you’re completely sure.',
+  tipOld:'“Very good” now is sometimes better than “perfect” later.'}
+};
+const PG_LABELS_EN = {motivate:['🚀','What motivates {him}'],talk:['💬','How to talk with {him}'],limits:['🧭','Boundaries & discipline'],study:['📚','Studying & school'],stress:['🌡️','Signs of stress & anxiety'],avoid:['⛔','Avoid']};
+const GUIDE_EN = {
+ D:{motivate:['Give {him} clear, measurable goals and challenges','Offer choices instead of direct orders: “Which one do you want to start with?”','Celebrate achievements and results'],
+  talk:['Be direct and brief; lead with the main point','Discuss things respectfully and avoid power struggles with {him}'],
+  limits:['Few, clear rules with consistent consequences agreed in advance','Involve {him} in setting some rules so {he} feels ownership'],
+  study:['Turn studying into a challenge against the clock or a daily target','Let {him} organize {his} own day within an agreed framework'],
+  stress:['Extra stubbornness and quick anger may signal stress, not disrespect','An excessive need for control when {he} feels insecure'],
+  avoid:['Scolding or embarrassing {him} in front of others','Imposing total control without dialogue']},
+ I:{motivate:['Sincere praise and recognition of {his} efforts, especially in front of others','Linking tasks to fun, play and interaction'],
+  talk:['Give {him} space to talk and express {him}self, and listen with enthusiasm','Use stories and examples instead of long lectures'],
+  limits:['Visual, playful reminders of the rules (charts, stickers)','Stay firm but kind — a joke does not cancel a rule'],
+  study:['Short sessions with breaks, colors and activities','Studying with a friend or out loud suits {him} well'],
+  stress:['Suddenly withdrawing from friends or losing {his} usual enthusiasm','Increased distraction and frequent forgetfulness'],
+  avoid:['Ignoring or mocking {his} ideas','Long isolation as punishment']},
+ S:{motivate:['Feeling safe and loved unconditionally','Explicit thanks for {his} help and kindness'],
+  talk:['Speak calmly, without shouting','Ask about {his} feelings with open questions — {he} may not speak up first'],
+  limits:['A stable, predictable routine reassures {him}','Prepare {him} in advance for any change (new school, moving, travel)'],
+  study:['A calm atmosphere and steady encouragement; a parent nearby helps a lot','Break big tasks into small steps'],
+  stress:['Excessive silence and withdrawal','Stomach aches or headaches on school mornings can signal hidden anxiety'],
+  avoid:['Comparing {him} to siblings or classmates','Intense arguments in front of {him}']},
+ C:{motivate:['Deep understanding, mastery and learning new things','Recognizing {his} accuracy and the quality of {his} work'],
+  talk:['Always explain the reasons; never settle for “because I said so”','Give {him} time to think before expecting an answer'],
+  limits:['Logical, clear, written rules','Be consistent — contradictions confuse {him}'],
+  study:['An organized plan, clear resources and a quiet place','Help {him} accept mistakes as a natural part of learning'],
+  stress:['Excessive perfectionism and fear of mistakes','Putting off starting for fear of not doing it perfectly'],
+  avoid:['Harsh criticism of mistakes','Rushing and surprises without preparation']}
+};
+const STAGE_TIPS_EN = {
+ kids:{D:['Give {him} small responsibilities, like tidying {his} toys or leading a family game','Use a star chart for daily achievements'],
+  I:['Turn the morning routine into a song or a game','Set daily time for {him} to tell you about {his} day'],
+  S:['Prepare for the first school day by visiting the school beforehand','Tuck a little love note into {his} school bag'],
+  C:['Answer {his} many questions patiently, or look up the answers together','Use a picture schedule for {his} day']},
+ tweens:{D:['Involve {him} in competitions and organized sports','Agree on weekly study goals and let {him} choose the reward'],
+  I:['Encourage group activities like drama or the school radio','Manage screen time gently with fun social alternatives'],
+  S:['Follow {his} friendships closely — social rejection hurts {him} deeply','Teach {him} to say “no” kindly'],
+  C:['Provide books, puzzles and science experiments','Gradually train {him} to present in front of others']},
+ teens:{D:['Talk as equals and give {him} real decisions within safe limits','Pick your battles wisely — not every disagreement is a power struggle'],
+  I:['Take interest in {his} digital world and ask about friends without interrogating','Help {him} manage time with fun tools'],
+  S:['Be the safe place {he} can return to without judgment','Watch for peer pressure — {he} may please others at {his} own expense'],
+  C:['Respect {his} privacy and personal time','Discuss big ideas with {him} — it brings you closer']},
+ youth:{D:['Let {him} lead the choice of major while you provide the information','Turn disagreements into negotiations about solutions'],
+  I:['Help {him} balance social life and studying with a flexible plan','Celebrate every step of progress, however small'],
+  S:['Reassure {him} that your love does not depend on grades','Watch for anxiety and sleeplessness during exam periods'],
+  C:['Provide accurate information about majors and the job market','Ease perfectionism: “very good” is sometimes enough']},
+ young:{D:['Shift from directing to advising','Trust {his} decisions and let {him} learn from experience'],
+  I:['Encourage {him} to turn {his} passion into a career path','Listen to {his} dreams before evaluating them'],
+  S:['Encourage {his} independence gradually, and reassure {him} that home is always a safe base','Help {him} set healthy boundaries with others'],
+  C:['Respect {his} need for privacy and independent thinking','Discuss plans with {him} using facts and logic']}
+};
+const STAGES_EN = {
+ kids:{label:'Early childhood (ages 4–9)',theme:'Treasure Island',
+  intro:'Hi {name}! I’m Philo 🐘. Let’s search together for the treasures of your personality on Treasure Island. Pick the picture that’s most like you — every answer brings you closer to the treasure!',
+  cta:'Let’s start the adventure! 🚀',
+  parent:'A stage of discovery, play and building trust; children learn from role models, routine and love more than from words.',
+  rewards:[{i:'💎',t:'You found a shiny gem!',x:'Well done, {name}! Let’s keep looking for the treasure.'},{i:'👑',t:'You found a golden crown!',x:'You’re amazing! The treasure is very close now.'},{i:'🗝️',t:'You got the treasure key!',x:'Just one more question to open the chest!'}],
+  loading:['Opening the treasure chest... 🗝️','Collecting the gems... 💎','Here is the treasure! ✨'],
+  q:[
+   {q:'At the playground, what do you like to do first?',o:['Climb the highest thing','Play with all the kids','Play with my best friend','Explore bugs and trees']},
+   {q:'You have a new box of colors. What do you draw?',o:['A super-fast rocket','A big colorful party','My home and family','A castle full of details']},
+   {q:'If your friend cries in class, what do you do?',o:['Sit next to them and comfort them','Tell them a joke to make them laugh','Quickly call the teacher','Ask: what happened?']},
+   {q:'If you became an animal for one day, which would you be?',o:['A fast cheetah','A colorful peacock','A cuddly panda','A clever octopus']},
+   {q:'When playing in a group, you are usually...',o:['The one who says: let’s play it this way!','The one who laughs and cheers everyone','The one who helps others','The one who makes sure everyone follows the rules']},
+   {q:'You got a wrapped gift. What do you do?',o:['Open it right away!','Show it to everyone around me','First thank the person who gave it','Guess what’s inside before opening it']},
+   {q:'What is the best thing about a school day?',o:['Being first','Talking with my friends','Making my teacher happy','Learning something new']},
+   {q:'When Mom or Dad says “No”...',o:['I try to convince them','I make them laugh so they change their mind','I feel a bit sad, then I listen','I ask: why not?']},
+   {q:'If you were a superhero, what would your power be?',o:['Super strength','Making everyone happy','Healing anyone who is sick','Knowing everything']},
+   {q:'Before bed, you like...',o:['To keep playing!','Listening to a happy song','A warm hug from Mom or Dad','A story full of puzzles']}
+  ]},
+ tweens:{label:'Late childhood (ages 10–12)',theme:'Heroes’ Quest',
+  intro:'Hi {name}! You have a map with 4 levels, and you win a new badge at each level. Answer honestly to discover your superpower!',
+  cta:'Start the quest! 🗺️',
+  parent:'A stage of achievement and building competence; friends and comparison with others matter more, and children start forming their self-image.',
+  rewards:[{i:'🥉',t:'Explorer Badge',x:'You completed the first level!'},{i:'🥈',t:'Adventurer Badge',x:'You’re halfway there — keep going!'},{i:'🥇',t:'Hero Badge',x:'Final level! Your superpower is about to appear.'}],
+  loading:['Drawing your personality map... 🗺️','Discovering your superpower... ⚡','Here is your result! ✨'],
+  q:[
+   {q:'On a school trip, which role do you choose?',o:['Team leader who picks the route','In charge of songs and fun','Making sure no one is left alone','Holding the map and the schedule']},
+   {q:'You have a group project. The first thing you do:',o:['Hand out tasks quickly','Collect lots of ideas from everyone','Ask everyone what they’d like to do','Read the task carefully and plan']},
+   {q:'Which game do you prefer?',o:['A race or competition','A group game full of laughs','A team game where we win together','A puzzle or strategy game']},
+   {q:'Two of your friends are fighting. What do you do?',o:['Tell them my honest opinion','Make them laugh so they forget','Calm each one down and listen','Find the cause, then suggest a solution']},
+   {q:'You got a lower grade than you expected:',o:['I decide to beat it next time','I tell my friends and we forget it fast','I worry about what my parents and teacher think','I review my mistakes to find the problem']},
+   {q:'In your free time you like:',o:['A new challenge or sport','Going out with friends','Spending time with family','Reading or making things with my hands']},
+   {q:'If the day’s plan suddenly changes:',o:['No problem, I decide the new plan','Awesome! A new adventure','I get a bit upset but adapt','I need to know the details']},
+   {q:'The sentence that makes you happiest:',o:['“You did it so fast, champ!”','“You’re awesome, everyone loves you”','“Thank you for helping me”','“Your answer is precise and smart”']},
+   {q:'In class you are usually:',o:['The first to raise my hand','The one who makes class fun','The quiet one who helps classmates','The one who asks lots of questions']},
+   {q:'If you were an inventor, what would you invent?',o:['A car faster than all others','An app that brings friends together','A robot that helps older people','A machine that solves any problem']},
+   {q:'What bothers you the most:',o:['Someone controlling me','Being alone with no one around','People around me fighting','Mess and unclear things']},
+   {q:'In video games you like to:',o:['Win and reach first place','Play online with my friends','Team up with my brother or friend','Discover every secret and hidden level']}
+  ]},
+ teens:{label:'Early adolescence (ages 13–15)',theme:'Secret Mission',
+  intro:'Welcome, Agent {name}. Your mission: uncover your secret profile. 12 situations await you, and every decision raises your rank. There are no wrong answers… only your real one.',
+  cta:'Start the mission 🕶️',
+  parent:'The start of adolescence and the search for identity; teens need independence and respect more than direct instructions, and friends strongly influence them.',
+  ranks:['Rookie Explorer','Field Agent','Special Agent','Elite Agent'],
+  rewards:[{i:'🎖️',t:'Promotion!',x:'Your new rank: Field Agent'},{i:'🏅',t:'Another promotion!',x:'You are now a Special Agent. Great work!'},{i:'🏆',t:'Elite rank!',x:'You are now an Elite Agent. The file is about to be revealed.'}],
+  loading:['Decrypting the file... 🔐','Analyzing decisions... 🧩','File ready 🔓'],
+  q:[
+   {q:'Your team is in a school competition and time is running out. Your role:',o:['Take charge and assign roles','Boost the team’s energy','Support whoever feels pressured','Check details to avoid mistakes']},
+   {q:'Your opinion differs from your friends’ on something:',o:['I defend my view strongly','I present it in a fun way and win them over','I usually keep it to myself to avoid conflict','I explain my reasons with logic and evidence']},
+   {q:'The perfect weekend:',o:['An activity full of challenge and adventure','A big hangout with friends','Quiet time with close people','Time for my hobby or learning something new']},
+   {q:'When your parents ask you to do something you don’t agree with:',o:['I refuse and sometimes argue hard','I negotiate nicely with some humor','I do it even if I’m not convinced','I ask to understand the reason first']},
+   {q:'On social media:',o:['I post my achievements and opinions','I interact with everyone and post a lot','I follow my friends and support them','I follow content I learn from and rarely post']},
+   {q:'Before an exam:',o:['I set a high target and challenge myself','I study better with friends','I get tense and need reassurance','I make an organized schedule and stick to it']},
+   {q:'A new classmate joined and seems lonely:',o:['I invite them to join my group','I introduce them to everyone right away','I sit with them and ask how they are','I observe first, then get to know them calmly']},
+   {q:'What motivates you most:',o:['Winning and challenge','Recognition and admiration from people','Seeing the people I love happy','Understanding and mastering things']},
+   {q:'When you get angry:',o:['I explode fast, then calm down','I let it out loudly, then forget','I hold it in and withdraw','I go quiet and think a lot about what happened']},
+   {q:'In teamwork, what annoys you most:',o:['Slowness and hesitation','A boring atmosphere','Conflicts and shouting','Carelessness and inaccuracy']},
+   {q:'If you had a budget for a small project:',o:['Start right away and learn along the way','A creative idea everyone talks about','A project that helps people','Study the market well before starting']},
+   {q:'Your friends describe you as:',o:['Bold and decisive','Fun and social','Kind and loyal','Smart and precise']}
+  ]},
+ youth:{label:'Late adolescence (ages 16–18)',theme:'Discover Your Version',chapters:['My style','My relationships','What drives me','My path'],
+  intro:'Hi {name} 👋 This isn’t an exam — it’s a mirror. 12 questions in 4 chapters to help you understand how you think, relate to others and make decisions.',
+  cta:'Start discovering',
+  parent:'A stage of life-shaping decisions, exam pressure and choosing a major; your teen needs a conversation partner, not a supervisor.',
+  loading:['Analyzing your answers...','Mapping your personality...','Your report is ready ✨'],
+  q:[
+   {q:'When you make an important decision (like choosing a track or major):',o:['I decide fast and own the outcome','I follow my passion and what inspires me','I consult my family and people I trust','I gather information and compare options carefully']},
+   {q:'Exam pressure makes me:',o:['More determined and competitive','Look for an outlet with friends','Anxious and in need of emotional support','More organized and detail-focused']},
+   {q:'In discussions:',o:['I say my opinion directly','I like being the center of the conversation','I listen more than I talk','I ask questions and verify the information']},
+   {q:'My relationship with rules:',o:['I challenge them if I don’t like them','I sometimes forget them in the excitement','I follow them to keep the peace','I follow them if they make sense']},
+   {q:'I perform best when:',o:['I have authority and freedom','The work is fun and with people','The atmosphere is stable and encouraging','Instructions are clear and there’s enough time']},
+   {q:'What I fear most:',o:['Failing or looking weak','Rejection or being ignored','Losing people I love or fighting with them','Making mistakes or being criticized']},
+   {q:'When I’m sad, I need:',o:['My space to handle it myself','Someone to vent to and laugh with','A hug and a kind word','Time to understand what I feel']},
+   {q:'I see my future career in:',o:['Leading a project or a company','A field with an audience, influence and creativity','A field where I help people','A specialized field built on knowledge and analysis']},
+   {q:'When my parents give me advice:',o:['I accept it if they leave the decision to me','I accept it if it’s said with love, not as a lecture','I usually accept it and value their care','I accept it if the reasons convince me']},
+   {q:'How I handle time:',o:['I get a lot done quickly','I’m sometimes late because I’m busy with people','I keep to my usual routine','I plan, organize and respect deadlines']},
+   {q:'The achievement I’m proudest of:',o:['Reaching a tough goal','Being liked and influential','Being a support to others','Mastering a skill deeply']},
+   {q:'One word that describes me:',o:['Ambition','Enthusiasm','Loyalty','Depth']}
+  ]},
+ young:{label:'Young adulthood (19+)',theme:'Self Compass',chapters:['Style','Relationships','Under pressure','Future'],
+  intro:'Hi {name}. This compass helps you understand your style at work, in relationships and in decisions — so you know your strengths and how to use them.',
+  cta:'Start',
+  parent:'A stage of independence and building the future; the relationship shifts from direct parenting to mentoring, friendship and mutual respect.',
+  loading:['Analyzing your answers...','Finding your compass direction...','Your report is ready ✨'],
+  q:[
+   {q:'At university or in teamwork, my natural role is:',o:['The leader who sets the direction','The connector who builds energy','The supporter who keeps the team together','The analyst who ensures quality']},
+   {q:'Facing a complex problem:',o:['I move fast to solve it','I discuss it with others to generate ideas','I look for a solution that satisfies everyone','I break it down step by step']},
+   {q:'My source of energy:',o:['Achievement and progress','People and new experiences','Close relationships and stability','Calm and learning']},
+   {q:'My relationship with my family now:',o:['I want clear independence in my decisions','Close, full of conversation and fun','Strong, and I care about their approval','I value it and need respect for my personal space']},
+   {q:'When I receive criticism:',o:['I defend myself, then reconsider','It affects me if it’s in front of people','It hurts inside and I try to please','I examine it objectively']},
+   {q:'My communication style:',o:['Direct and brief','Enthusiastic and expressive','Friendly and patient','Precise and considered']},
+   {q:'Under pressure:',o:['I can get sharp and hasty','I get scattered and overpromise','I hesitate and avoid confrontation','I drown in details and delay decisions']},
+   {q:'My ideal work environment:',o:['Ambitious goals and responsibility','Collaboration, diversity and creative freedom','A close-knit team and trust','Clear standards and time to focus']},
+   {q:'When I disagree with a close friend:',o:['I confront it directly','I talk a lot to clear the air','I give in to protect the relationship','I need time to organize my thoughts first']},
+   {q:'I learn best through:',o:['Direct experience and challenge','Discussion and group work','Practical examples and a supportive mentor','Reading and in-depth research']},
+   {q:'Success to me means:',o:['Impact and tangible achievement','Recognition and a good reputation','A balanced life and happy relationships','Expertise and excellence in knowledge']},
+   {q:'What I need most from my parents now:',o:['Trust in my decisions','Encouragement and celebration','Support and reassurance','Respect and rational discussion']}
+  ]}
+};
+
+/* ================= Interface text (AR / EN) ================= */
+const UI = {
+ ar:{title:'اكتشف شخصيتك | Skills Bank',foot:'© Skills Bank · أداة توعوية لاكتشاف الشخصية وليست تشخيصًا نفسيًا',langBtn:'EN',
+  hero:'اكتشف شخصيتك',lead:'رحلة ممتعة وقصيرة نتعرّف فيها على ما يميّزك ✨',askName:'ما اسمك؟',namePh:'اكتب اسمك هنا',
+  next:'التالي ←',back:'رجوع',parentHint:'👨‍👩‍👧 لولي الأمر: دع طفلك يجيب بنفسه دون توجيه، ثم اطّلعا معًا على النتيجة و«دليل الوالدين» في النهاية.',
+  ageQ:'كم عمرك يا {name}؟',journey:'رحلتك',youAre:'أنت...',gender:'النوع',boy:'ولد',girl:'بنت',male:'ذكر',female:'أنثى',
+  avatarKid:'[اختر بطلك|اختاري بطلتك] في الرحلة',avatarOld:'[اختر|اختاري] رمزًا يعبّر عنك',start:'[ابدأ|ابدئي] ←',
+  r1:'✅ لا توجد إجابات صحيحة أو خاطئة',r2:'💡 [اختر|اختاري] ما يشبهك فعلًا، لا ما يجب أن يكون',count:n=>`⏱️ ${n<=10?n+' أسئلة':n+' سؤالًا'} فقط`,r4:'🔊 اضغط على السمّاعة لتسمع السؤال',
+  parentNote:'👨‍👩‍👧 لولي الأمر: يمكنك قراءة الأسئلة ل{h} بصوت هادئ دون توجيه الإجابة.',
+  qOf:(i,n)=>`سؤال ${i} من ${n}`,prev:'→ السؤال السابق',level:i=>`المرحلة ${i} من 4`,chOf:i=>`الفصل ${i} من 4`,ch:'الفصل',cont:'[تابع|تابعي] ←',
+  dynT:'تم فتح فصل جديد 🔓',dynX:s=>`بدأت ملامح شخصيتك تظهر... جانب «${s}» يبدو واضحًا حتى الآن.`,
+  resIs:'{name}، شخصيتك هي:',tie:(a,b)=>`⚖️ نتيجتك متقاربة بين «${a}» و«${b}»، وهذا يعني أنك [تملك|تملكين] مرونة جميلة في التعامل مع المواقف المختلفة.`,
+  tMe:'⭐ نتيجتي',tGuide:'👨‍👩‍👧 دليل الوالدين',tCert:'🏅 الشهادة',blend:'🎨 مزيج شخصيتك',strengths:'💪 نقاط قوتك',tipT:'💡 نصيحة لك',
+  prGuide:'🖨️ طباعة / حفظ الدليل PDF',prCert:'🖨️ طباعة / حفظ الشهادة PDF',wa:'مشاركة النتيجة عبر واتساب',again:'🔄 اختبار جديد',
+  pill:'👨‍👩‍👧 موجّه لولي الأمر',child:'{ibn}',age:a=>`${a} ${a<=10?'سنوات':'سنة'}`,nature:'طبيعة المرحلة:',stageTips:'نصائح خاصة بمرحلة {ibn} الآن',second:'الجانب الثاني في شخصية {ibn}',
+  disc:'⚠️ هذه أداة توعوية لفهم الأسلوب الشخصي وتحسين التواصل، وليست تشخيصًا نفسيًا. الشخصية تنمو وتتغير مع العمر والتجربة؛ لذا يُنصح بإعادة الاختبار كل عام. إذا لاحظت قلقًا أو حزنًا مستمرًا، فاستشر مختصًا.',
+  cTitle:'شهادة اكتشاف الشخصية',cGrant:'تمنح Skills Bank هذه الشهادة إلى',cDone:th=>`[لإتمامه|لإتمامها] رحلة «${th}» بنجاح، [واكتشافه|واكتشافها] أن [شخصيته|شخصيتها] من نمط`,cDate:'التاريخ:',cFoot:'Skills Bank · اكتشف شخصيتك',locale:'ar-EG',
+  waHead:'نتيجة «اكتشف شخصيتك» – Skills Bank',waName:'الاسم',waAge:'العمر',waStage:'المرحلة',waMain:'النمط الأساسي',waSec:'النمط الثاني',waStr:'نقاط القوة',sep:'، ',voice:'ar-SA',or:'، أو، '},
+ en:{title:'Discover Your Personality | Skills Bank',foot:'© Skills Bank · An awareness tool for personality discovery, not a psychological diagnosis',langBtn:'ع',
+  hero:'Discover Your Personality',lead:'A short, fun journey to find out what makes you special ✨',askName:'What’s your name?',namePh:'Type your name here',
+  next:'Next →',back:'Back',parentHint:'👨‍👩‍👧 For parents: let your child answer alone without guidance, then explore the result and the “Parent Guide” together at the end.',
+  ageQ:'How old are you, {name}?',journey:'Your journey',youAre:'I am a...',gender:'Gender',boy:'Boy',girl:'Girl',male:'Male',female:'Female',
+  avatarKid:'Pick your hero for the journey',avatarOld:'Pick a symbol that represents you',start:'Start →',
+  r1:'✅ There are no right or wrong answers',r2:'💡 Choose what is really like you, not what should be',count:n=>`⏱️ Only ${n} questions`,r4:'🔊 Tap the speaker to hear the question',
+  parentNote:'👨‍👩‍👧 For parents: you can read the questions to {him} calmly without guiding the answer.',
+  qOf:(i,n)=>`Question ${i} of ${n}`,prev:'← Previous question',level:i=>`Level ${i} of 4`,chOf:i=>`Chapter ${i} of 4`,ch:'Chapter',cont:'Continue →',
+  dynT:'New chapter unlocked 🔓',dynX:s=>`Your personality is starting to show... the “${s}” side looks strong so far.`,
+  resIs:'{name}, your personality is:',tie:(a,b)=>`⚖️ Your result is balanced between “${a}” and “${b}” — which means you have great flexibility in handling different situations.`,
+  tMe:'⭐ My result',tGuide:'👨‍👩‍👧 Parent guide',tCert:'🏅 Certificate',blend:'🎨 Your personality mix',strengths:'💪 Your strengths',tipT:'💡 A tip for you',
+  prGuide:'🖨️ Print / save guide as PDF',prCert:'🖨️ Print / save certificate as PDF',wa:'Share the result on WhatsApp',again:'🔄 New test',
+  pill:'👨‍👩‍👧 For parents',child:'{Ibn}',age:a=>`${a} years`,nature:'About this stage:',stageTips:'Tips for {ibn}’s current stage',second:'{Ibn}’s second side',
+  disc:'⚠️ This is an awareness tool to understand personal style and improve communication — not a psychological diagnosis. Personality grows and changes with age and experience, so retaking the test every year is recommended. If you notice persistent anxiety or sadness, consult a specialist.',
+  cTitle:'Personality Discovery Certificate',cGrant:'Skills Bank proudly presents this certificate to',cDone:th=>`for successfully completing the “${th}” journey and discovering a personality type of`,cDate:'Date:',cFoot:'Skills Bank · Discover Your Personality',locale:'en-GB',
+  waHead:'“Discover Your Personality” result – Skills Bank',waName:'Name',waAge:'Age',waStage:'Stage',waMain:'Main type',waSec:'Second type',waStr:'Strengths',sep:', ',voice:'en-US',or:', or, '}
+};
+
+/* ================= State & helpers ================= */
+const state = {lang:'ar',name:'',age:8,gender:'',avatar:'',stage:'kids',qi:0,answers:[],order:[],rewarded:{},sound:true,lock:false,cur:null,tab:'me'};
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function t(s){
+  const f = state.gender === 'f', en = state.lang === 'en';
+  return String(s).replace(/\[([^\]|]*)\|([^\]]*)\]/g,(m,a,b)=>f?b:a)
+    .replace(/\{h\}/g,f?'ها':'ه').replace(/\{y\}/g,f?'ت':'ي')
+    .replace(/\{ibn\}/g,en?(f?'your daughter':'your son'):(f?'ابنتك':'ابنك')).replace(/\{Ibn\}/g,f?'Your daughter':'Your son')
+    .replace(/\{he\}/g,f?'she':'he').replace(/\{him\}/g,f?'her':'him').replace(/\{his\}/g,f?'her':'his')
+    .replace(/\{name\}/g,esc(state.name));
+}
+const U = k => { const v = UI[state.lang][k]; return typeof v === 'function' ? v : t(v); };
+const EN = () => state.lang === 'en';
+const TYP = k => EN() ? {...TYPES[k],...TYPES_EN[k]} : TYPES[k];
+function STG(k){
+  const a = STAGES[k]; if(!EN()) return a;
+  const e = STAGES_EN[k];
+  return {...a,...e,rewards:e.rewards||a.rewards,q:a.q.map((q,i)=>({q:e.q[i].q,o:q.o.map((o,j)=>[o[0],o[1],e.q[i].o[j]])}))};
+}
+const GD = k => (EN()?GUIDE_EN:GUIDE)[k];
+const STIPS = () => EN()?STAGE_TIPS_EN:STAGE_TIPS;
+const PGL = () => EN()?PG_LABELS_EN:PG_LABELS;
+const stageFor = a => a<=9?'kids':a<=12?'tweens':a<=15?'teens':a<=18?'youth':'young';
+const isDark = k => k==='teens'||k==='youth';
+const kidish = () => state.stage==='kids'||state.stage==='tweens';
+const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+function logoHTML(dark){
+  const url = dark ? (BRAND.logoUrlWhite||BRAND.logoUrl) : BRAND.logoUrl;
+  return url ? `<img src="${url}" alt="Skills Bank">` : LOGO_SVG;
+}
+function setTheme(k){
+  document.body.className = k;
+  $('#logo').innerHTML = logoHTML(isDark(k));
+  $('#decor').innerHTML = (DECOR[k]||[]).map((e,i)=>`<span style="top:${(i*37)%88+4}%;left:${(i*53)%88+4}%;animation-delay:${i*.7}s">${e}</span>`).join('');
+}
+function applyLang(){
+  const h = document.documentElement;
+  h.lang = state.lang; h.dir = EN() ? 'ltr' : 'rtl';
+  document.title = UI[state.lang].title;
+  $('#foot').textContent = UI[state.lang].foot;
+  $('#lng').textContent = UI[state.lang].langBtn;
+  $('#lng').setAttribute('aria-label', EN() ? 'العربية' : 'English');
+}
+function show(html){ app.innerHTML = `<div class="screen enter">${html}</div>`; window.scrollTo({top:0,behavior:'smooth'}); }
+function card(inner,cls=''){return `<div class="card ${cls}">${inner}</div>`}
+
+/* sound */
+let AC;
+function tone(f,d=.12,type='sine',delay=0,vol=.08){
+  if(!state.sound) return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;const s=AC.currentTime+delay;g.gain.setValueAtTime(vol,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g).connect(AC.destination);o.start(s);o.stop(s+d+.02)}catch(e){}
+}
+const sfx = {tap:()=>tone(440,.07),pick:()=>{tone(660,.1,'triangle');tone(880,.12,'triangle',.08)},win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.2,'triangle',i*.1))};
+$('#snd').onclick = () => { state.sound=!state.sound; $('#snd').textContent = state.sound?'🔊':'🔇'; if(!state.sound&&'speechSynthesis' in window) speechSynthesis.cancel(); };
+$('#lng').onclick = () => {
+  const nm = $('#nm'); if(nm && nm.value.trim()) state.name = nm.value.trim();
+  state.lang = EN() ? 'ar' : 'en'; applyLang(); sfx.tap();
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  document.querySelectorAll('.modal').forEach(m=>m.remove()); state.lock = false;
+  if(state.cur) state.cur();
+};
+
+/* read-aloud */
+function speak(txt){
+  try{ if(!('speechSynthesis' in window)) return; speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt.replace(/[\u{1F000}-\u{1FAFF}☀-➿️‍«»“”]/gu,''));
+    const lang=UI[state.lang].voice; u.lang=lang; u.rate=.9;
+    const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith(lang.slice(0,2))); if(v) u.voice=v; speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* confetti */
+function confetti(n=140){
+  const c=$('#fx'),ctx=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#FFBC3A','#F26444','#40BDA9','#4D88E8','#ffffff'];
+  const ps=Array.from({length:n},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,w:6+Math.random()*6,h:8+Math.random()*8,vx:-2+Math.random()*4,vy:2+Math.random()*4,r:Math.random()*6,vr:-.2+Math.random()*.4,c:cols[Math.random()*cols.length|0]}));
+  const t0=performance.now();
+  (function f(tm){ctx.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.05;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()});if(tm-t0<3200)requestAnimationFrame(f);else ctx.clearRect(0,0,c.width,c.height)})(t0);
+}
+
+/* scoring */
+function counts(){const c={D:0,I:0,S:0,C:0};state.answers.forEach(a=>{if(a)c[a]++});return c}
+function leader(){const c=counts();return Object.keys(c).sort((a,b)=>c[b]-c[a])[0]}
+function scores(){
+  const c=counts(),n=state.answers.filter(Boolean).length||1;
+  const order=Object.keys(c).sort((a,b)=>c[b]-c[a]);
+  const p={};order.forEach(k=>p[k]=Math.round(c[k]*100/n));
+  p[order[0]]+=100-order.reduce((s,k)=>s+p[k],0);
+  return {c,p,order};
+}
+
+/* ================= Setup ================= */
+function renderSetup(step){
+  state.cur = () => renderSetup(step);
+  const dots=`<div class="dots">${[0,1,2,3].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>`;
+  const back=`<button class="btn ghost" id="back">${U('back')}</button>`;
+  if(step===0){
+    setTheme('setup');
+    show(card(`${dots}<div class="hero-emoji bob">🧭</div>
+      <h1 class="h1 center">${U('hero')}</h1>
+      <p class="lead center">${U('lead')}</p>
+      <label class="lbl" for="nm">${U('askName')}</label>
+      <input id="nm" class="inp" maxlength="30" placeholder="${U('namePh')}" value="${esc(state.name)}" autocomplete="off">
+      <div class="row"><button class="btn primary big" id="next">${U('next')}</button></div>
+      <p class="parent-hint">${U('parentHint')}</p>`));
+    const inp=$('#nm'); setTimeout(()=>inp.focus(),300);
+    const go=()=>{const v=inp.value.trim();if(!v){inp.classList.add('shake');setTimeout(()=>inp.classList.remove('shake'),400);return}state.name=v;sfx.tap();renderSetup(1)};
+    $('#next').onclick=go; inp.onkeydown=e=>{if(e.key==='Enter')go()};
+  }
+  if(step===1){
+    show(card(`${dots}<div class="hero-emoji">🎂</div>
+      <h2 class="h2 center">${U('ageQ')}</h2>
+      <div class="stepper"><button class="round" id="plus" aria-label="+">+</button><div class="agev" id="agev">${state.age}</div><button class="round" id="minus" aria-label="-">−</button></div>
+      <input type="range" min="4" max="30" value="${state.age}" id="ager" class="range" aria-label="age">
+      <div class="stage-chip" id="stchip"></div>
+      <div class="row">${back}<button class="btn primary" id="next">${U('next')}</button></div>`));
+    const upd=v=>{state.age=Math.max(4,Math.min(30,v));$('#agev').textContent=state.age;$('#ager').value=state.age;const k=stageFor(state.age);state.stage=k;const st=STG(k);$('#stchip').innerHTML=`${st.icon} ${U('journey')}: «${st.theme}»<br><small>${st.label}</small>`.replace(/«(.*)»/,EN()?'“$1”':'«$1»');if(document.body.className!==k)setTheme(k)};
+    upd(state.age);
+    $('#plus').onclick=()=>{sfx.tap();upd(state.age+1)}; $('#minus').onclick=()=>{sfx.tap();upd(state.age-1)};
+    $('#ager').oninput=e=>upd(+e.target.value);
+    $('#back').onclick=()=>renderSetup(0); $('#next').onclick=()=>{sfx.tap();renderSetup(2)};
+  }
+  if(step===2){
+    const young=state.age<13;
+    const opts=young?[['m','👦',U('boy')],['f','👧',U('girl')]]:[['m','🧑',U('male')],['f','👩',U('female')]];
+    show(card(`${dots}<h2 class="h2 center">${young?U('youAre'):U('gender')}</h2>
+      <div class="choices">${opts.map(([v,e,l])=>`<button class="choice ${state.gender===v?'sel':''}" data-v="${v}"><span>${e}</span>${l}</button>`).join('')}</div>
+      <div class="row">${back}</div>`));
+    app.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{state.gender=b.dataset.v;b.classList.add('sel');sfx.pick();setTimeout(()=>renderSetup(3),250)});
+    $('#back').onclick=()=>renderSetup(1);
+  }
+  if(step===3){
+    const set=state.age<=12?AVATARS[state.gender]:AVATARS.older;
+    if(!set.includes(state.avatar)) state.avatar='';
+    show(card(`${dots}<h2 class="h2 center">${state.age<=12?U('avatarKid'):U('avatarOld')}</h2>
+      <div class="choices avatars">${set.map(e=>`<button class="choice ${state.avatar===e?'sel':''}" data-v="${e}"><span>${e}</span></button>`).join('')}</div>
+      <div class="row">${back}<button class="btn primary" id="next" ${state.avatar?'':'disabled'}>${U('start')}</button></div>`));
+    app.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{app.querySelectorAll('.choice').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');state.avatar=b.dataset.v;sfx.pick();$('#next').disabled=false});
+    $('#back').onclick=()=>renderSetup(2);
+    $('#next').onclick=()=>{state.qi=0;state.answers=[];state.order=[];state.rewarded={};state.tab='me';renderIntro()};
+  }
+}
+
+/* ================= Intro ================= */
+function renderIntro(){
+  state.cur = renderIntro;
+  const st=STG(state.stage);
+  setTheme(state.stage);
+  show(card(`<div class="guide-big bob">${st.guide}</div>
+    <div class="tag">${st.label}</div>
+    <h1 class="h1">${st.icon} ${st.theme}</h1>
+    <p class="lead">${t(st.intro)}</p>
+    <ul class="rules"><li>${U('r1')}</li><li>${U('r2')}</li><li>${U('count')(st.q.length)}</li>${st.speak?`<li>${U('r4')}</li>`:''}</ul>
+    ${state.age<7?`<p class="note">${U('parentNote')}</p>`:''}
+    <button class="btn primary big" id="go">${t(st.cta)}</button>`,'intro'));
+  $('#go').onclick=()=>{sfx.win();renderQuestion()};
+}
+
+/* ================= Questions ================= */
+function progressHTML(st){
+  const N=st.q.length,i=state.qi;
+  if(st.progress==='stars') return `<div class="stars">${Array.from({length:N},(_,k)=>`<span class="${k<i?'on':k===i?'cur':''}">${k<i?'⭐':'☆'}</span>`).join('')}</div>`;
+  if(st.progress==='map') return `<div class="lvl">${U('level')(Math.min(4,Math.floor(i/3)+1))}</div><div class="map">${Array.from({length:N},(_,k)=>`<span class="node ${k<i?'done':''} ${k===i?'cur':''} ${(k+1)%3===0?'flag':''}">${k===i?state.avatar:''}</span>`).join('')}</div>`;
+  if(st.progress==='xp'){const r=t(st.ranks[Math.min(3,Math.floor(i/3))]);return `<div class="xp"><div class="xp-top"><span>🎖️ ${r}</span><span>XP ${i*25} / ${N*25}</span></div><div class="xp-bar"><i style="width:${i/N*100}%"></i></div></div>`}
+  return `<div class="pbar"><div class="pbar-top"><span>${U('chOf')(Math.floor(i/3)+1)}</span><span>${Math.round(i/N*100)}%</span></div><div class="pbar-track"><i style="width:${i/N*100}%"></i></div></div>`;
+}
+function renderQuestion(){
+  state.cur = renderQuestion;
+  const st=STG(state.stage),N=st.q.length,i=state.qi,Q=st.q[i];
+  if(!state.order[i]) state.order[i]=shuffle([0,1,2,3]);
+  const letters=EN()?['A','B','C','D']:['أ','ب','ج','د'];
+  const opts=state.order[i].map((k,pos)=>{const [ty,em,tx]=Q.o[k];
+    return `<button class="opt p${pos} ${state.answers[i]===ty?'sel':''}" data-t="${ty}">${st.layout==='tiles'?`<span class="oe">${em}</span>`:`<span class="ol">${letters[pos]}</span>`}<span class="ot">${t(tx)}</span></button>`}).join('');
+  const guide=st.speak?`<div class="guide-row"><span class="me">${state.avatar}</span><span class="guide">${st.guide}</span><button class="speak" id="spk" aria-label="listen">🔊</button></div>`:'';
+  const chapter=st.chapters?`<div class="chapter">${U('ch')} ${Math.floor(i/3)+1}: ${st.chapters[Math.floor(i/3)]}</div>`:'';
+  show(`${progressHTML(st)}${card(`${guide}${chapter}<div class="qnum">${U('qOf')(i+1,N)}</div>
+    <h2 class="qtext">${t(Q.q)}</h2>
+    <div class="opts ${st.layout}">${opts}</div>
+    <div class="qnav">${i>0?`<button class="linkbtn" id="prev">${U('prev')}</button>`:''}</div>`,'qcard')}`);
+  if(st.speak) $('#spk').onclick=()=>speak(t(Q.q)+'. '+state.order[i].map(k=>t(Q.o[k][2])).join(U('or')));
+  if(i>0) $('#prev').onclick=()=>{state.qi--;renderQuestion()};
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(state.lock) return; state.lock=true;
+    app.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel','pop'); sfx.pick(); state.answers[i]=b.dataset.t;
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+    setTimeout(()=>{state.lock=false;nextQ()},450);
+  });
+}
+function nextQ(){
+  const N=STAGES[state.stage].q.length;
+  state.qi++;
+  if(state.qi>=N) return renderAnalyzing();
+  if(state.qi%3===0 && !state.rewarded[state.qi]){state.rewarded[state.qi]=true;return showReward(state.qi/3-1,renderQuestion)}
+  renderQuestion();
+}
+function showReward(idx,cb){
+  let r=STG(state.stage).rewards[idx]; if(typeof r==='function') r=r();
+  sfx.win(); if(kidish()) confetti(60);
+  const m=document.createElement('div'); m.className='modal';
+  m.innerHTML=`<div class="mcard"><div class="micon">${r.i}</div><h3>${t(r.t)}</h3><p>${t(r.x)}</p><button class="btn primary big" id="mcont">${U('cont')}</button></div>`;
+  document.body.appendChild(m);
+  m.querySelector('#mcont').onclick=()=>{m.remove();cb()};
+}
+
+/* ================= Analyzing ================= */
+function renderAnalyzing(){
+  state.cur = () => {};
+  const st=STG(state.stage);
+  show(card(`<div class="loader">${st.icon}</div><h2 class="h2" id="lm">${t(st.loading[0])}</h2><div class="lbar"><i></i></div>`,'center'));
+  let k=0; const iv=setInterval(()=>{k++;const L=STG(state.stage).loading;if(k<L.length&&$('#lm'))$('#lm').textContent=t(L[k])},800);
+  setTimeout(()=>{clearInterval(iv);renderResult()},2500);
+}
+
+/* ================= Result ================= */
+function guideHTML(order,p){
+  const k=order[0],k2=order[1],G=GD(k),st=STG(state.stage);
+  const secs=Object.entries(PGL()).map(([key,[ic,lb]])=>`<div class="pg-sec ${key==='avoid'?'warn':''}"><h4>${ic} ${t(lb)}</h4><ul>${G[key].map(x=>`<li>${t(x)}</li>`).join('')}</ul></div>`).join('');
+  return `<div class="pg-head"><span class="pill">${U('pill')}</span>
+    <h2>${U('child')} ${esc(state.name)} (${U('age')(state.age)}) — ${t(TYP(k).name)} ${TYP(k).icon}</h2>
+    <p><b>${U('nature')}</b> ${st.parent}</p></div>
+    <div class="pg-grid">${secs}</div>
+    <div class="pg-box"><h4>🎯 ${U('stageTips')}</h4><ul>${STIPS()[state.stage][k].map(x=>`<li>${t(x)}</li>`).join('')}</ul></div>
+    <div class="pg-box gold"><h4>🔀 ${U('second')}: ${t(TYP(k2).name)} (${p[k2]}%)</h4><ul><li>${t(GD(k2).motivate[0])}</li><li>${t(GD(k2).talk[0])}</li></ul></div>
+    <p class="disc">${U('disc')}</p>`;
+}
+function certHTML(k){
+  const T=TYP(k),st=STG(state.stage),d=new Date().toLocaleDateString(UI[state.lang].locale,{year:'numeric',month:'long',day:'numeric'});
+  return `<div class="cert" id="cert"><div class="cert-in"><div class="logo">${logoHTML(false)}</div>
+    <div class="cert-title">${U('cTitle')}</div>
+    <p>${U('cGrant')}</p>
+    <div class="cert-name">${esc(state.name)}</div>
+    <p>${t(U('cDone')(st.theme))}</p>
+    <div class="cert-type" style="color:${T.color}">${T.kid} ${t(T.name)}</div>
+    <span class="seal">🏅</span>
+    <div class="cert-foot"><span>${U('cDate')} ${d}</span><span>${U('cFoot')}</span></div></div></div>`;
+}
+function renderResult(silent){
+  state.cur = () => renderResult(true);
+  const {p,order,c}=scores(),k=order[0],P=TYP(k),K=kidish();
+  const tie=c[order[0]]===c[order[1]];
+  const strengths=K?P.str:P.strOld;
+  const tab=state.tab;
+  show(`
+  <div class="card result" style="--tc:${P.color}">
+    <div class="res-top"><span class="avatar">${state.avatar}</span>
+      <div class="mid"><div class="muted">${U('resIs')}</div><h1 class="tname">${t(P.name)}</h1></div>
+      <div class="ticon">${K?P.kid:P.icon}</div></div>
+    <p class="lead" style="margin-top:12px">${t(K?P.desc:P.descOld)}</p>
+    ${tie?`<div class="tie">${t(U('tie')(TYP(order[0]).name,TYP(order[1]).name))}</div>`:''}
+  </div>
+  <div class="tabs"><button class="tab ${tab==='me'?'on':''}" data-p="me">${U('tMe')}</button><button class="tab ${tab==='guide'?'on':''}" data-p="guide">${U('tGuide')}</button><button class="tab ${tab==='cert'?'on':''}" data-p="cert">${U('tCert')}</button></div>
+  <div class="panel ${tab==='me'?'on':''}" id="p-me">${card(`<div class="stack" style="--tc:${P.color}">
+    <div><div class="sec-t">${U('blend')}</div>${order.map(x=>`<div class="bar-row"><span>${K?TYPES[x].kid:TYPES[x].icon} ${t(TYP(x).name)}</span><div class="bt"><i style="--w:${p[x]}%;background:${TYPES[x].color}"></i></div><b>${p[x]}%</b></div>`).join('')}</div>
+    <div><div class="sec-t">${U('strengths')}</div><div class="chips">${strengths.map(s=>`<span class="chip">${s}</span>`).join('')}</div></div>
+    <div><div class="sec-t">${U('tipT')}</div><div class="tipbox">${t(K?P.tip:P.tipOld)}</div></div></div>`)}</div>
+  <div class="panel ${tab==='guide'?'on':''}" id="p-guide">${card(`<div id="guide">${guideHTML(order,p)}</div><div class="actions"><button class="btn navy" id="prGuide">${U('prGuide')}</button></div>`)}</div>
+  <div class="panel ${tab==='cert'?'on':''}" id="p-cert">${certHTML(k)}<div class="actions"><button class="btn primary" id="prCert">${U('prCert')}</button></div></div>
+  <div class="actions"><button class="btn wa" id="wa">${U('wa')}</button><button class="btn ghost" id="again">${U('again')}</button></div>`);
+  if(!silent){ sfx.win(); confetti(); }
+  app.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=b.dataset.p;app.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));app.querySelectorAll('.panel').forEach(x=>x.classList.toggle('on',x.id==='p-'+b.dataset.p));sfx.tap()});
+  $('#prGuide').onclick=()=>printEl('guide',true);
+  $('#prCert').onclick=()=>printEl('cert',false);
+  $('#wa').onclick=()=>{
+    const X=UI[state.lang],st=STG(state.stage);
+    const txt=`${X.waHead}\n\n${X.waName}: ${state.name}\n${X.waAge}: ${state.age}\n${X.waStage}: ${st.label}\n\n${X.waMain}: ${t(TYP(order[0]).name)} (${p[order[0]]}%)\n${X.waSec}: ${t(TYP(order[1]).name)} (${p[order[1]]}%)\n${X.waStr}: ${strengths.join(X.sep)}`;
+    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  };
+  $('#again').onclick=()=>{state.name='';state.gender='';state.avatar='';state.age=8;state.tab='me';renderSetup(0)};
+}
+function printEl(id,withLogo){
+  const z=$('#printzone'),prev=document.body.className;
+  z.innerHTML=(withLogo?`<div class="print-logo logo">${logoHTML(false)}</div>`:'')+document.getElementById(id).outerHTML;
+  document.body.className='young printing';
+  setTimeout(()=>{window.print();setTimeout(()=>{document.body.className=prev;z.innerHTML=''},400)},50);
+}
+
+applyLang();
+renderSetup(0);
+
+</script>
+</body>
+</html>
